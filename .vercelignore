@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env
+.env.*
+*.log
+dev.log
+dev.err.log
+*.db
+prisma/*.db
+uploads
+.tsbuildinfo
+*.tsbuildinfo

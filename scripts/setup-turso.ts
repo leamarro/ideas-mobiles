@@ -1,11 +1,11 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 import { execSync } from "node:child_process";
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
-import { prisma as local } from "../src/lib/prisma";
+import { localDatabaseUrl } from "../src/lib/prisma";
 
 // Migra esquema + datos desde SQLite local hacia Turso.
-// Uso (desde la raíz del proyecto):
+// Uso (desde la raÃ­z del proyecto):
 //   $env:TURSO_DATABASE_URL="libsql://..."; $env:TURSO_AUTH_TOKEN="..."; npm run db:migrate-turso
 // o pasando los valores por argumento:
 //   npx tsx scripts/setup-turso.ts "libsql://..." "token"
@@ -29,6 +29,11 @@ async function main() {
   const remote = new PrismaClient({
     adapter: new PrismaLibSQL({ url, authToken }),
   });
+  // Ojo: no usar el cliente de src/lib/prisma acá — si TURSO_DATABASE_URL está
+  // en el entorno, ese cliente apuntaría a Turso en vez del SQLite local.
+  const local = new PrismaClient({
+    adapter: new PrismaLibSQL({ url: localDatabaseUrl() }),
+  });
 
   console.log("2/3 Creando tablas en Turso...");
   const statements = ddl
@@ -36,9 +41,13 @@ async function main() {
     .map((s) => s.trim())
     .filter(Boolean);
   for (const statement of statements) {
-    await remote.$executeRawUnsafe(`${statement};`);
+    try {
+      await remote.$executeRawUnsafe(`${statement};`);
+    } catch {
+      console.log("    (tabla ya existía, se ignora)");
+    }
   }
-  console.log(`    ${statements.length} sentencias ejecutadas.`);
+  console.log(`    ${statements.length} sentencias procesadas.`);
 
   console.log("3/3 Copiando datos de la BD local...");
   const [users, categories, services, items, settings, messages] = await Promise.all([
@@ -50,12 +59,12 @@ async function main() {
     local.contactMessage.findMany(),
   ]);
 
-  await remote.user.createMany({ data: users, skipDuplicates: true });
-  await remote.category.createMany({ data: categories, skipDuplicates: true });
-  await remote.service.createMany({ data: services, skipDuplicates: true });
-  await remote.portfolioItem.createMany({ data: items, skipDuplicates: true });
-  await remote.siteSettings.createMany({ data: settings, skipDuplicates: true });
-  await remote.contactMessage.createMany({ data: messages, skipDuplicates: true });
+  await remote.user.createMany({ data: users });
+  await remote.category.createMany({ data: categories });
+  await remote.service.createMany({ data: services });
+  await remote.portfolioItem.createMany({ data: items });
+  await remote.siteSettings.createMany({ data: settings });
+  await remote.contactMessage.createMany({ data: messages });
 
   const [ru, rc, rs, ri, rst, rm] = await Promise.all([
     remote.user.count(),
@@ -66,7 +75,7 @@ async function main() {
     remote.contactMessage.count(),
   ]);
 
-  console.log("Migración completada. Conteos en Turso:");
+  console.log("MigraciÃ³n completada. Conteos en Turso:");
   console.log(`  users=${ru} categories=${rc} services=${rs} portfolio=${ri} settings=${rst} messages=${rm}`);
 
   await remote.$disconnect();

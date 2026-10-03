@@ -7,7 +7,7 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 // Prisma CLI resuelve las rutas relativas de `file:` contra la carpeta del
 // schema (prisma/), pero el adapter las resolvería contra process.cwd().
 // Traducimos para que ambas formas apunten siempre al mismo archivo.
-function localDatabaseUrl(): string {
+export function localDatabaseUrl(): string {
   const raw = process.env.DATABASE_URL || "file:./dev.db";
   if (!raw.startsWith("file:")) return raw;
 

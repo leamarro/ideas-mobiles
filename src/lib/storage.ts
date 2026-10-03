@@ -3,19 +3,19 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { put } from "@vercel/blob";
 import { getContentTypeFor, getUploadsDir, toUploadUrl } from "@/lib/uploads";
 
+// En Vercel hay Blob (OIDC vía BLOB_STORE_ID, o token estático
+// BLOB_READ_WRITE_TOKEN); sin esas variables se guarda en disco local.
 export function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
 }
 
 // Guarda un archivo y devuelve su URL pública.
-// - Con BLOB_READ_WRITE_TOKEN (Vercel): sube a Vercel Blob y devuelve URL absoluta.
-// - Sin token (local / VPS): escribe en uploads/ y devuelve /api/uploads/<nombre>.
 export async function storeUpload(name: string, buffer: Buffer): Promise<string> {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
-  if (token) {
+  if (hasBlobStorage()) {
     const blob = await put(name, buffer, {
       access: "public",
-      token,
+      ...(token ? { token } : {}),
       contentType: getContentTypeFor(name),
       allowOverwrite: true,
     });

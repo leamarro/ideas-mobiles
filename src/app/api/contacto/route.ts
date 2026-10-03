@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { prisma } from "@/lib/prisma";
-import {
-  MAX_UPLOAD_BYTES,
-  buildUploadName,
-  getUploadsDir,
-  toUploadUrl,
-} from "@/lib/uploads";
+import { MAX_UPLOAD_BYTES, buildUploadName } from "@/lib/uploads";
+import { storeUpload } from "@/lib/storage";
 
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
@@ -63,9 +57,6 @@ export async function POST(request: Request) {
     const originalName = buildUploadName(file.type);
     if (!originalName) return bad("Formato de imagen no permitido. Usá JPG, PNG, WebP o GIF");
 
-    const uploadsDir = getUploadsDir();
-    await mkdir(uploadsDir, { recursive: true });
-
     let buffer: Buffer = Buffer.from(await file.arrayBuffer());
     let name0 = originalName;
 
@@ -81,8 +72,7 @@ export async function POST(request: Request) {
       // sin sharp se guarda el original (solo formatos permitidos)
     }
 
-    await writeFile(path.join(uploadsDir, name0), buffer);
-    imageUrl = toUploadUrl(name0);
+    imageUrl = await storeUpload(name0, buffer);
   }
 
   await prisma.contactMessage.create({

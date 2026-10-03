@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { getSession } from "@/lib/auth";
-import {
-  MAX_UPLOAD_BYTES,
-  buildUploadName,
-  getUploadsDir,
-  toUploadUrl,
-} from "@/lib/uploads";
+import { MAX_UPLOAD_BYTES, buildUploadName } from "@/lib/uploads";
+import { storeUpload } from "@/lib/storage";
 
 export async function POST(request: Request) {
   const session = await getSession();
@@ -36,9 +30,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const uploadsDir = getUploadsDir();
-  await mkdir(uploadsDir, { recursive: true });
-
   let buffer: Buffer = Buffer.from(await file.arrayBuffer());
   let name = originalName;
 
@@ -54,7 +45,7 @@ export async function POST(request: Request) {
     // si sharp no está disponible se guarda el original (solo formatos permitidos)
   }
 
-  await writeFile(path.join(uploadsDir, name), buffer);
+  const url = await storeUpload(name, buffer);
 
-  return NextResponse.json({ url: toUploadUrl(name), name }, { status: 201 });
+  return NextResponse.json({ url, name }, { status: 201 });
 }

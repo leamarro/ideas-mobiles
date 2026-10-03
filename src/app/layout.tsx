@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Oswald } from "next/font/google";
+import { getSiteSettings } from "@/lib/data";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,26 +16,33 @@ const oswald = Oswald({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Ideas Móviles | Cartelería y Comunicación Visual",
-    template: "%s | Ideas Móviles",
-  },
-  description: "Ideas Móviles - Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  openGraph: {
-    type: "website",
-    locale: "es-ES",
-    siteName: "Ideas Móviles",
-    title: "Ideas Móviles | Cartelería y Comunicación Visual",
-    description: "Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ideas Móviles",
-    description: "Cartelería y comunicación visual profesional.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const siteName = settings.title;
+  const defaultTitle = `${settings.title} | Cartelería y Comunicación Visual`;
+  const description = settings.description;
+
+  return {
+    title: {
+      default: defaultTitle,
+      template: `%s | ${siteName}`,
+    },
+    description,
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+    openGraph: {
+      type: "website",
+      locale: "es-ES",
+      siteName,
+      title: defaultTitle,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: defaultTitle,
+      description,
+    },
+  };
+}
 
 export default function RootLayout({
   children,

@@ -5,7 +5,7 @@ import { getSiteSettings } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Contacto | Ideas Móviles",
+  title: "Contacto",
   description: "Contactá con Ideas Móviles para tu próximo proyecto de cartelería.",
 };
 

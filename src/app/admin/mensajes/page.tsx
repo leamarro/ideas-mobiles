@@ -5,7 +5,7 @@ import { AdminMensajes } from "./AdminMensajes";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Mensajes | Ideas Móviles Admin",
+  title: "Mensajes",
   description: "Bandeja de mensajes del formulario de contacto.",
 };
 

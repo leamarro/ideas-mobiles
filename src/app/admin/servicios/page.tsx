@@ -5,7 +5,7 @@ import { AdminServicios } from "./AdminServicios";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Servicios | Ideas Móviles Admin",
+  title: "Servicios",
   description: "Gestionar servicios desde el panel de administración.",
 };
 

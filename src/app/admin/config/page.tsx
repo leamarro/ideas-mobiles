@@ -5,7 +5,7 @@ import { SettingsForm } from "../settings-form";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Configuración | Ideas Móviles Admin",
+  title: "Configuración",
   description: "Configuración general del sitio desde el panel de administración.",
 };
 

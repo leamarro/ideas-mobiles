@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Nosotros | Ideas Móviles",
+  title: "Nosotros",
   description: "Conocé más sobre Ideas Móviles y nuestra filosofía de trabajo.",
 };
 

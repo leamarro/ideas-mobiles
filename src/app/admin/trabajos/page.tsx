@@ -5,7 +5,7 @@ import { AdminTrabajos } from "./AdminTrabajos";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Trabajos | Ideas Móviles Admin",
+  title: "Trabajos",
   description: "Gestionar trabajos del portfolio desde el panel de administración.",
 };
 

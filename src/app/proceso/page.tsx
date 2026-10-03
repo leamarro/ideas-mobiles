@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Proceso | Ideas Móviles",
+  title: "Proceso",
   description: "Conocé nuestro proceso de trabajo paso a paso.",
 };
 

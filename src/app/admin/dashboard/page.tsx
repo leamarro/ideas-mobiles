@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Dashboard | Ideas Móviles Admin",
+  title: "Dashboard",
   description: "Dashboard del panel de administración.",
 };
 

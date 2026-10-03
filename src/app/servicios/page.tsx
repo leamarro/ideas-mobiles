@@ -5,7 +5,7 @@ import { getServices } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Servicios | Ideas Móviles",
+  title: "Servicios",
   description: "Descubrí todos los servicios de cartelería y comunicación visual de Ideas Móviles.",
 };
 

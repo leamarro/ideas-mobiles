@@ -4,7 +4,7 @@ import { getSession } from "@/lib/auth";
 import { AdminNav } from "./nav";
 
 export const metadata: Metadata = {
-  title: "Admin | Ideas Móviles",
+  title: "Admin",
   description: "Panel de administración de Ideas Móviles.",
 };
 

@@ -11,40 +11,42 @@ const categories = [
   { name: "Señalética", slug: "senalizacion", order: 6 },
 ];
 
+// Imágenes reales (fotos propias) para el arranque de una base nueva.
+// En una base existente el seed NUNCA actualiza: solo crea lo que falta.
 const services = [
   {
     title: "Carteles y Letras Corpóreas",
     description:
       "Diseños personalizados en Polifan o PVC espumado para comercios, eventos y decoración.",
-    image: "/images/portfolio/portfolio-referencia-01.webp",
+    image: "/images/servicios/carteles-letras-corporeas.webp",
     category: "carteles-letras",
     order: 1,
   },
   {
     title: "Cartelería Comercial",
     description: "Marquesinas, carteles con lona frontal, gigantografías y banners.",
-    image: "/images/portfolio/portfolio-referencia-07.webp",
+    image: "/images/servicios/carteleria-comercial.webp",
     category: "carteleria-comercial",
     order: 2,
   },
   {
     title: "Ploteados en Vinilos y Esmerilados",
     description: "Vinilos de corte e impresión para vidrieras, paredes y automóviles.",
-    image: "/images/portfolio/portfolio-referencia-09.webp",
+    image: "/images/servicios/vinilos-esmerilados.webp",
     category: "vinilos-esmerilados",
     order: 3,
   },
   {
     title: "Gráfica Vehicular Publicitaria",
     description: "Trabajos para convertir vehículos en soportes de publicidad móvil.",
-    image: "/images/portfolio/portfolio-referencia-10.webp",
+    image: "/images/servicios/grafica-vehicular.webp",
     category: "grafica-vehicular",
     order: 4,
   },
   {
     title: "Servicio de Imprenta Digital",
     description: "Stickers troquelados, tarjetas, folletos, carteles y cortes láser.",
-    image: "/images/portfolio/portfolio-referencia-08.webp",
+    image: "/images/servicios/imprenta-digital.webp",
     category: "imprenta-digital",
     order: 5,
   },
@@ -52,22 +54,22 @@ const services = [
     title: "Señalética",
     description:
       "Señalización de seguridad e información para plantas, hospitales y espacios públicos.",
-    image: "/images/portfolio/portfolio-referencia-11.webp",
+    image: "/images/servicios/senal-etica.webp",
     category: "senalizacion",
     order: 6,
   },
 ];
 
 const portfolioItems = [
-  { title: "Cartelería Comercial", image: "/images/portfolio/portfolio-referencia-01.webp", category: "carteleria", order: 1 },
-  { title: "Letras Corpóreas", image: "/images/portfolio/portfolio-referencia-02.webp", category: "corpóreas", order: 2 },
-  { title: "Vinilos y Esmerilados", image: "/images/portfolio/portfolio-referencia-03.webp", category: "vinilos", order: 3 },
-  { title: "Gráfica Vehicular", image: "/images/portfolio/portfolio-referencia-04.webp", category: "vehicular", order: 4 },
+  { title: "Cartelería Comercial", image: "/images/trabajos/carteleria-comercial.webp", category: "carteleria", order: 1 },
+  { title: "Letras Corpóreas", image: "/images/trabajos/letras-corporeas.webp", category: "corpóreas", order: 2 },
+  { title: "Vinilos y Esmerilados", image: "/images/trabajos/vinilos-esmerilados.webp", category: "vinilos", order: 3 },
+  { title: "Gráfica Vehicular", image: "/images/trabajos/grafica-vehicular.webp", category: "vehicular", order: 4 },
   { title: "Imprenta Digital", image: "/images/portfolio/portfolio-referencia-05.webp", category: "imprenta", order: 5 },
-  { title: "Señalética", image: "/images/portfolio/portfolio-referencia-06.webp", category: "senalizacion", order: 6 },
-  { title: "Marquesinas", image: "/images/portfolio/portfolio-referencia-07.webp", category: "carteleria", order: 7 },
+  { title: "Señalética", image: "/images/trabajos/senal-etica.webp", category: "senalizacion", order: 6 },
+  { title: "Marquesinas", image: "/images/trabajos/marquesinas.webp", category: "carteleria", order: 7 },
   { title: "Diseño Editorial", image: "/images/portfolio/portfolio-referencia-08.webp", category: "imprenta", order: 8 },
-  { title: "Banners", image: "/images/portfolio/portfolio-referencia-09.webp", category: "carteleria", order: 9 },
+  { title: "Banners", image: "/images/trabajos/banners.webp", category: "carteleria", order: 9 },
   { title: "Vinilo Automotriz", image: "/images/portfolio/portfolio-referencia-10.webp", category: "vinilos", order: 10 },
   { title: "Seguridad Industrial", image: "/images/portfolio/portfolio-referencia-11.webp", category: "senalizacion", order: 11 },
   { title: "Eventos", image: "/images/portfolio/portfolio-referencia-12.webp", category: "corpóreas", order: 12 },
@@ -108,37 +110,37 @@ async function main() {
   for (const category of categories) {
     await prisma.category.upsert({
       where: { slug: category.slug },
-      update: category,
+      update: {},
       create: { ...category, published: true },
     });
   }
 
+  let createdServices = 0;
   for (const service of services) {
     const existing = await prisma.service.findFirst({ where: { title: service.title } });
-    if (existing) {
-      await prisma.service.update({ where: { id: existing.id }, data: service });
-    } else {
+    if (!existing) {
       await prisma.service.create({ data: { ...service, published: true } });
+      createdServices += 1;
     }
   }
 
+  let createdItems = 0;
   for (const item of portfolioItems) {
     const existing = await prisma.portfolioItem.findFirst({ where: { title: item.title } });
-    if (existing) {
-      await prisma.portfolioItem.update({ where: { id: existing.id }, data: item });
-    } else {
+    if (!existing) {
       await prisma.portfolioItem.create({ data: { ...item, published: true } });
+      createdItems += 1;
     }
   }
 
-  await prisma.siteSettings.upsert({
-    where: { id: siteSettings.id },
-    update: siteSettings,
-    create: siteSettings,
-  });
+  const settingsExist = await prisma.siteSettings.findUnique({ where: { id: siteSettings.id } });
+  if (!settingsExist) {
+    await prisma.siteSettings.create({ data: siteSettings });
+  }
 
   console.log(
-    `Seed completado: admin=${adminEmail}, ${services.length} servicios, ${portfolioItems.length} trabajos.`
+    `Seed completado: admin=${adminEmail}, servicios creados=${createdServices}, trabajos creados=${createdItems}. ` +
+      `Los registros existentes no se modifican.`
   );
 }
 

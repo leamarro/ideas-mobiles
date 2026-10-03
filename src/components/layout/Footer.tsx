@@ -12,7 +12,7 @@ const footerLinks = {
     { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },
   ],
-  servicios: ["CartelerÃ­a", "CorpÃ³reas", "Vinilos", "Vehicular", "Imprenta", "SeÃ±alÃ©tica"],
+  servicios: ["Cartelería", "Corpóreas", "Vinilos", "Vehicular", "Imprenta", "Señalética"],
 };
 
 export function Footer({ settings }: { settings?: SiteSettings }) {
@@ -20,7 +20,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
   const email = settings?.email ?? CONTACT_PLACEHOLDERS.email;
   const instagram = settings?.instagram ?? CONTACT_PLACEHOLDERS.instagram;
   const description =
-    settings?.description ?? "CartelerÃ­a y comunicaciÃ³n visual profesional. CotizÃ¡ tu proyecto.";
+    settings?.description ?? "Cartelería y comunicación visual profesional. Cotizá tu proyecto.";
 
   return (
     <footer className="relative bg-zinc-950">
@@ -33,14 +33,14 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
               <div className="relative h-9 w-36">
                 <Image
                   src="/images/logo.webp"
-                  alt="Ideas MÃ³viles Logo"
+                  alt="Ideas Móviles Logo"
                   fill
                   className="object-contain object-left"
                 />
               </div>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-500">
-              CartelerÃ­a y comunicaciÃ³n visual profesional. CotizÃ¡ tu proyecto.
+              {description}
             </p>
             <div className="mt-6 flex gap-3">
               <a
@@ -90,7 +90,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              NavegaciÃ³n
+              Navegación
             </h4>
             <nav className="space-y-3">
               {footerLinks.navegacion.map((link) => (
@@ -155,10 +155,10 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
           <p className="text-xs text-zinc-600">
-            Â© {new Date().getFullYear()} Ideas MÃ³viles. Todos los derechos reservados.
+            © {new Date().getFullYear()} Ideas Móviles. Todos los derechos reservados.
           </p>
           <p className="text-xs text-zinc-600">
-            Imagen y ComunicaciÃ³n
+            Imagen y Comunicación
           </p>
         </div>
       </Container>

@@ -26,7 +26,7 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
       ? items
       : items.filter((item) => item.category === selectedCategory);
 
-  const handleItemClick = (item: PortfolioItemData, index: number) => {
+  const handleItemClick = (item: PortfolioItemData) => {
     const images = items.map((i) => i.image);
     const imageIndex = items.indexOf(item);
     setLightboxImages(images);
@@ -78,7 +78,7 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
                   title={item.title}
                   image={item.image}
                   category={item.category}
-                  onClick={() => handleItemClick(item, index)}
+                  onClick={() => handleItemClick(item)}
                   index={index}
                 />
               </Reveal>

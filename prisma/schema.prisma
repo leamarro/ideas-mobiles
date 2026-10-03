@@ -69,12 +69,25 @@ model SiteSettings {
 }
 
 model Category {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  slug        String   @unique
+  id          String  @id @default(cuid())
+  name        String  @unique
+  slug        String  @unique
   description String?
-  order       Int      @default(0)
-  published   Boolean  @default(true)
+  order       Int     @default(0)
+  published   Boolean @default(true)
 
   @@map("categories")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  whatsapp  String?
+  service   String?
+  message   String
+  image     String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
 }

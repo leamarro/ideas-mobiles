@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { Container } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
   title: "Proceso | Ideas Móviles",

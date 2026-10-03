@@ -13,7 +13,8 @@ interface FormData {
   whatsapp: string;
   servicio: string;
   mensaje: string;
-  imagen: string | null;
+  imagen: File | null;
+  website: string;
 }
 
 interface ContactoProps {
@@ -44,6 +45,7 @@ export function Contacto({
     servicio: "",
     mensaje: "",
     imagen: null,
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -57,33 +59,56 @@ export function Contacto({
     []
   );
 
-  const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        showToast("El archivo debe ser menor a 5MB", "error");
-        return;
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0] || null;
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          showToast("El archivo debe ser menor a 5MB", "error");
+          return;
+        }
+        const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+        if (!validTypes.includes(file.type)) {
+          showToast("Formato no permitido. Usa JPG, PNG, WebP o GIF", "error");
+          return;
+        }
       }
-      const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-      if (!validTypes.includes(file.type)) {
-        showToast("Formato no permitido. Usa JPG, PNG, WebP o GIF", "error");
-        return;
-      }
-      setFormData((prev) => ({ ...prev, imagen: file.name }));
-    }
-  }, [showToast]);
+      setFormData((prev) => ({ ...prev, imagen: file }));
+    },
+    [showToast]
+  );
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
-      setTimeout(() => {
+
+      try {
+        const payload = new FormData();
+        payload.append("nombre", formData.nombre);
+        payload.append("whatsapp", formData.whatsapp);
+        payload.append("servicio", formData.servicio);
+        payload.append("mensaje", formData.mensaje);
+        payload.append("website", formData.website);
+        if (formData.imagen) payload.append("imagen", formData.imagen);
+
+        const response = await fetch("/api/contacto", { method: "POST", body: payload });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          showToast(data.error || "No se pudo enviar el mensaje. Probá de nuevo.", "error");
+          return;
+        }
+
         setSubmitted(true);
-        setIsSubmitting(false);
         showToast("¡Mensaje enviado! Nos contactaremos pronto.", "success");
-      }, 1000);
+      } catch {
+        showToast("Error de conexión. Probá de nuevo.", "error");
+      } finally {
+        setIsSubmitting(false);
+      }
     },
-    [showToast]
+    [formData, showToast]
   );
 
   if (submitted) {
@@ -216,6 +241,18 @@ export function Contacto({
 
           <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-card md:p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="hidden" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <div>
                 <label htmlFor="nombre" className={labelClassName}>
                   Nombre

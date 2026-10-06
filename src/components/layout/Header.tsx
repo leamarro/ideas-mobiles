@@ -67,7 +67,7 @@ export function Header() {
             </div>
           </Link>
 
-          <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-zinc-400 xl:block">
+          <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-zinc-500 xl:block">
             Cartelería integral para empresas, comercios y particulares.
           </span>
 
@@ -125,7 +125,7 @@ export function Header() {
                 style={{ animationDelay: `${index * 40}ms` }}
               >
                 {link.label}
-                <ChevronRight className="h-4 w-4 text-zinc-400" />
+                <ChevronRight className="h-4 w-4 text-zinc-500" />
               </Link>
             ))}
             <Link

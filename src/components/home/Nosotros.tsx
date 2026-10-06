@@ -5,19 +5,26 @@ import { Reveal } from "@/components/ui/Reveal";
 
 interface NosotrosProps {
   slogan?: string;
+  showHeading?: boolean;
 }
 
-export function Nosotros({ slogan }: NosotrosProps) {
+export function Nosotros({ slogan, showHeading = true }: NosotrosProps) {
   return (
     <section id="nosotros" className="bg-white py-20 md:py-28">
       <Container maxWidth="full">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div>
-            <SectionHeading
-              eyebrow="Nosotros"
-              title="Quiénes somos"
-              align="left"
-            />
+            {showHeading && (
+              <SectionHeading
+                eyebrow="Nosotros"
+                align="left"
+                title={
+                  <>
+                    Quiénes <span className="text-brand-red-500">somos</span>
+                  </>
+                }
+              />
+            )}
             <Reveal>
               <p className="mb-6 text-lg leading-relaxed text-zinc-600">
                 Somos un equipo apasionado por la comunicación visual y la cartelería.
@@ -28,9 +35,6 @@ export function Nosotros({ slogan }: NosotrosProps) {
                   {slogan || '"Nuestra propuesta, es ayudarte a alcanzar tu objetivo…\nNuestro objetivo, es ayudarte a alcanzar el tuyo…!"'}
                 </p>
               </blockquote>
-              <p className="mt-6 text-xs text-zinc-400">
-                Este contenido es provisional. Puede actualizarse desde el panel de administración.
-              </p>
             </Reveal>
           </div>
 
@@ -60,7 +64,7 @@ export function Nosotros({ slogan }: NosotrosProps) {
                   </div>
                 </div>
               </div>
-              <span className="absolute bottom-5 left-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+              <span className="absolute bottom-5 left-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
                 Imagen y Comunicación
               </span>
             </div>

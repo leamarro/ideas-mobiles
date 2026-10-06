@@ -5,6 +5,7 @@ import { Service } from "@/types/service";
 import { uploadImageProps } from "@/lib/upload-urls";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Container } from "@/components/ui/Section";
 
 interface ServiciosProps {
   services: Service[];
@@ -26,21 +27,21 @@ export function Servicios({ services, showHeading = true }: ServiciosProps) {
   if (publishedServices.length === 0) {
     return (
       <section id="servicios" className="bg-white py-20 md:py-28">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+        <Container maxWidth="full">
           {showHeading && (
             <SectionHeading eyebrow="Lo que hacemos" title="Nuestros Servicios" />
           )}
           <p className="mx-auto max-w-xl text-center text-zinc-500">
-            Contenido provisional — los servicios se configurarán desde el panel de administración.
+            Estamos preparando esta sección. Mientras tanto, contactanos y te contamos todo lo que hacemos.
           </p>
-        </div>
+        </Container>
       </section>
     );
   }
 
   return (
     <section id="servicios" className="bg-white py-20 md:py-28">
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+      <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
             eyebrow="Lo que hacemos"
@@ -93,7 +94,7 @@ export function Servicios({ services, showHeading = true }: ServiciosProps) {
             </Reveal>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

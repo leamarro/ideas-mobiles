@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 
 interface ProcesoProps {
+  showHeading?: boolean;
   steps?: Array<{
     number: string;
     title: string;
@@ -18,19 +19,21 @@ const defaultSteps = [
   { number: "04", title: "Entrega / Instalación", description: "Entregamos e instalamos tu nueva cartelería." },
 ];
 
-export function Proceso({ steps = defaultSteps }: ProcesoProps) {
+export function Proceso({ steps = defaultSteps, showHeading = true }: ProcesoProps) {
   return (
     <section id="proceso" className="bg-zinc-50 py-20 md:py-28">
       <Container maxWidth="full">
-        <SectionHeading
-          eyebrow="Cómo trabajamos"
+        {showHeading && (
+          <SectionHeading
+            eyebrow="Cómo trabajamos"
           title={
             <>
               Nuestro <span className="text-brand-red-500">Proceso</span>
             </>
           }
-          subtitle="Así trabajamos — paso a paso, de idea a realidad"
-        />
+            subtitle="Así trabajamos — paso a paso, de idea a realidad"
+          />
+        )}
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
@@ -57,7 +60,7 @@ export function Proceso({ steps = defaultSteps }: ProcesoProps) {
 
               {index < steps.length - 1 && (
                 <span
-                  className="absolute -right-6 top-1/2 z-10 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 shadow-soft lg:flex"
+                  className="absolute -right-6 top-1/2 z-10 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 shadow-soft lg:flex"
                   aria-hidden="true"
                 >
                   <ArrowRight className="h-3 w-3" />
@@ -67,9 +70,6 @@ export function Proceso({ steps = defaultSteps }: ProcesoProps) {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-xs text-zinc-400">
-          Contenido provisional — editable desde el panel de administración.
-        </p>
       </Container>
     </section>
   );

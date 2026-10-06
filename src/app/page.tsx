@@ -23,7 +23,6 @@ export default async function Home() {
     <>
       <Header />
       <Hero
-        subtitle={settings.heroSubtitle}
         text={settings.heroText}
         buttonText={settings.heroButtonText}
         buttonLink={settings.heroButtonLink}

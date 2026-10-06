@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
-import { useToast } from "@/hooks/useToast";
 
 interface FormData {
   nombre: string;
@@ -49,11 +48,12 @@ export function Contacto({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const { showToast } = useToast();
+  const [formError, setFormError] = useState<string | null>(null);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
+      setFormError(null);
       setFormData((prev) => ({ ...prev, [name]: value }));
     },
     []
@@ -64,24 +64,26 @@ export function Contacto({
       const file = e.target.files?.[0] || null;
       if (file) {
         if (file.size > 5 * 1024 * 1024) {
-          showToast("El archivo debe ser menor a 5MB", "error");
+          setFormError("El archivo debe ser menor a 5MB");
           return;
         }
         const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
         if (!validTypes.includes(file.type)) {
-          showToast("Formato no permitido. Usa JPG, PNG, WebP o GIF", "error");
+          setFormError("Formato no permitido. Usá JPG, PNG, WebP o GIF");
           return;
         }
       }
+      setFormError(null);
       setFormData((prev) => ({ ...prev, imagen: file }));
     },
-    [showToast]
+    []
   );
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
+      setFormError(null);
 
       try {
         const payload = new FormData();
@@ -96,19 +98,18 @@ export function Contacto({
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          showToast(data.error || "No se pudo enviar el mensaje. Probá de nuevo.", "error");
+          setFormError(data.error || "No se pudo enviar el mensaje. Probá de nuevo.");
           return;
         }
 
         setSubmitted(true);
-        showToast("¡Mensaje enviado! Nos contactaremos pronto.", "success");
       } catch {
-        showToast("Error de conexión. Probá de nuevo.", "error");
+        setFormError("Error de conexión. Probá de nuevo.");
       } finally {
         setIsSubmitting(false);
       }
     },
-    [formData, showToast]
+    [formData]
   );
 
   if (submitted) {
@@ -335,6 +336,14 @@ export function Contacto({
                   Máx. 5MB — JPG, PNG, WebP o GIF
                 </p>
               </div>
+              {formError && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-brand-red-500/30 bg-brand-red-500/10 px-4 py-3 text-sm font-medium text-brand-red-600"
+                >
+                  {formError}
+                </div>
+              )}
               <Button
                 type="submit"
                 variant="primary"

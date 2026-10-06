@@ -1,16 +1,22 @@
+import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface CTAProps {
-  title?: string;
+  title?: ReactNode;
   subtitle?: string;
   buttonText?: string;
   buttonLink?: string;
 }
 
 export function CTA({
-  title = "¿Listo para tu próximo proyecto?",
+  title = (
+    <>
+      ¿Listo para tu <span className="text-brand-red-500">próximo proyecto</span>?
+    </>
+  ),
   subtitle = "Hablemos. Cotizá sin compromiso y empezá a convertir tu idea en realidad.",
   buttonText = "Contactar por WhatsApp",
   buttonLink = `https://wa.me/${CONTACT_PLACEHOLDERS.whatsapp.replace(/\D/g, "")}`,
@@ -27,7 +33,8 @@ export function CTA({
       />
 
       <Container maxWidth="full">
-        <div className="relative mx-auto max-w-2xl text-center">
+        <Reveal>
+          <div className="relative mx-auto max-w-2xl text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-300 backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-red-500" />
             Empezá hoy
@@ -54,7 +61,8 @@ export function CTA({
               Ver servicios
             </a>
           </div>
-        </div>
+          </div>
+        </Reveal>
       </Container>
     </section>
   );

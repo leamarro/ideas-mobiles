@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Nosotros } from "@/components/home/Nosotros";
 
 export const metadata: Metadata = {
   title: "Nosotros",
@@ -8,16 +9,15 @@ export const metadata: Metadata = {
 export default function NosotrosPage() {
   return (
     <main className="bg-white">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
         <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-brand-black uppercase">
           Nosotros
         </h1>
-        <div className="mt-12 bg-brand-light rounded-lg p-8 border-2 border-brand-grey-300">
-          <p className="text-brand-dark">
-            Contenido provisional — editable desde el panel de administración.
-          </p>
-        </div>
+        <p className="text-brand-dark text-lg max-w-2xl">
+          Somos un equipo apasionado por la comunicación visual y la cartelería.
+        </p>
       </div>
+      <Nosotros showHeading={false} />
     </main>
   );
 }

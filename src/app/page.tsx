@@ -22,23 +22,25 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <Hero
-        text={settings.heroText}
-        buttonText={settings.heroButtonText}
-        buttonLink={settings.heroButtonLink}
-      />
-      <Servicios services={services} />
-      <Portfolio items={portfolioItems} />
-      <Nosotros />
-      <Proceso />
-      <CTA />
-      <Contacto
-        whatsapp={settings.whatsapp}
-        phone={settings.phone}
-        email={settings.email}
-        instagram={settings.instagram}
-        address={settings.address}
-      />
+      <main>
+        <Hero
+          text={settings.heroText}
+          buttonText={settings.heroButtonText}
+          buttonLink={settings.heroButtonLink}
+        />
+        <Servicios services={services} />
+        <Portfolio items={portfolioItems} />
+        <Nosotros />
+        <Proceso />
+        <CTA />
+        <Contacto
+          whatsapp={settings.whatsapp}
+          phone={settings.phone}
+          email={settings.email}
+          instagram={settings.instagram}
+          address={settings.address}
+        />
+      </main>
       <Footer settings={settings} />
       <WhatsAppButton whatsapp={settings.whatsapp} />
     </>

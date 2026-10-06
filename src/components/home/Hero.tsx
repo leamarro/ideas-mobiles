@@ -18,7 +18,7 @@ export function Hero({
     <section className="relative min-h-[92svh] w-full overflow-hidden bg-zinc-950">
       <div className="absolute inset-0" aria-hidden="true">
         <Image
-          src="/images/imagen-fondo.jpg"
+          src="/images/imagen-fondo2.png"
           alt=""
           fill
           priority
@@ -28,9 +28,9 @@ export function Hero({
         <div className="absolute inset-0 bg-zinc-950/55" />
       </div>
 
-      <div className="absolute inset-0 md:inset-auto md:left-1/2 md:top-1/2 md:aspect-[1408/768] md:w-full md:max-w-[calc(92svh*1.833)] md:-translate-x-1/2 md:-translate-y-1/2">
+      <div className="absolute inset-0 md:inset-auto md:left-1/2 md:top-1/2 md:aspect-[1743/902] md:w-full md:max-w-[calc(92svh*1.9324)] md:-translate-x-1/2 md:-translate-y-1/2">
         <Image
-          src="/images/imagen-fondo.jpg"
+          src="/images/imagen-fondo2.png"
           alt=""
           fill
           priority

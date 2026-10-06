@@ -26,7 +26,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
     <footer className="relative bg-zinc-950">
       <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-red-500/70 to-transparent" />
 
-      <Container className="py-16 md:py-20">
+      <Container maxWidth="full" className="py-16 md:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="inline-block rounded-2xl bg-white p-2.5 shadow-soft">
@@ -155,10 +155,10 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
-          <p className="text-xs text-zinc-600">
+          <p className="text-xs text-zinc-400">
             © {new Date().getFullYear()} Ideas Móviles. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-zinc-600">
+          <p className="text-xs text-zinc-400">
             Imagen y Comunicación
           </p>
         </div>

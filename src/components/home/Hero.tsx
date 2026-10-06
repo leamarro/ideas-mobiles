@@ -16,12 +16,13 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="relative flex min-h-[92svh] md:min-h-[65svh] w-full flex-col justify-center overflow-hidden bg-zinc-950">
-      <div className="absolute inset-0" aria-hidden="true">
+      <h1 className="sr-only">Ideas Móviles — Imagen y Comunicación</h1>
+      <div className="absolute inset-0 hidden md:block" aria-hidden="true">
         <Image
           src="/images/imagen-fondo2.png"
           alt=""
           fill
-          priority
+          loading="eager"
           sizes="100vw"
           className="scale-110 object-cover blur-2xl opacity-70"
         />

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import type { PortfolioItem } from "@/types/portfolio";
-import { PORTFOLIO_CATEGORIES } from "@/types/portfolio";
+import { PORTFOLIO_CATEGORIES, PORTFOLIO_CATEGORY_LABELS } from "@/types/portfolio";
 import { useToast } from "@/hooks/useToast";
 import { ImageField } from "@/app/admin/image-field";
 import { uploadImageProps } from "@/lib/upload-urls";
@@ -208,7 +208,7 @@ export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] 
                 <option value="">Seleccioná una categoría</option>
                 {categoryOptions.map((cat) => (
                   <option key={cat} value={cat}>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    {PORTFOLIO_CATEGORY_LABELS[cat]}
                   </option>
                 ))}
               </select>

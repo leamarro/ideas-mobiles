@@ -15,7 +15,7 @@ export function Hero({
   buttonLink = "/contacto",
 }: HeroProps) {
   return (
-    <section className="relative flex min-h-[92svh] w-full flex-col justify-center overflow-hidden bg-zinc-950">
+    <section className="relative flex min-h-[92svh] md:min-h-[70svh] w-full flex-col justify-center overflow-hidden bg-zinc-950">
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src="/images/imagen-fondo2.png"
@@ -28,14 +28,14 @@ export function Hero({
         <div className="absolute inset-0 bg-zinc-950/55" />
       </div>
 
-      <div className="absolute inset-0 md:relative md:aspect-[1743/902] md:w-full">
+      <div className="absolute inset-0 md:relative md:aspect-[1743/812] md:w-full">
         <Image
           src="/images/imagen-fondo2.png"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[50%_100%]"
         />
         <div
           className="absolute inset-0 bg-[linear-gradient(to_top_right,rgb(9_9_11/0.92)_0%,rgb(9_9_11/0.7)_28%,rgb(9_9_11/0.3)_55%,transparent_78%)]"

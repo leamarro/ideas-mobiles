@@ -5,6 +5,7 @@ import { MessageCircle, Phone, Mail, Instagram, MapPin, ChevronRight, Check } fr
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
 
 interface FormData {
@@ -115,7 +116,7 @@ export function Contacto({
   if (submitted) {
     return (
       <section id="contacto" className="bg-white py-20 md:py-28">
-        <Container>
+        <Container maxWidth="full">
           <div className="mx-auto max-w-xl text-center">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 shadow-lg">
               <Check className="h-8 w-8 text-white" />
@@ -172,20 +173,25 @@ export function Contacto({
       external: false,
       icon: <MapPin className="h-5 w-5" />,
     },
-  ];
+  ].filter((m) => m.value && m.value !== CONTACT_PLACEHOLDERS.address);
 
   return (
     <section id="contacto" className="bg-white py-20 md:py-28">
-      <Container>
+      <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
             eyebrow="Hablemos"
-            title="Contacto"
+            title={
+              <>
+                Nuestro <span className="text-brand-red-500">Contacto</span>
+              </>
+            }
             subtitle="Hacé tu consulta y nos ponemos en contacto"
           />
         )}
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <Reveal>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             <h3 className="mb-5 font-display text-sm font-semibold uppercase tracking-wider text-zinc-900">
               Contactanos
@@ -203,7 +209,7 @@ export function Contacto({
                       {method.icon}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                      <span className="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
                         {method.label}
                       </span>
                       <span className="block truncate text-sm font-medium text-zinc-800">
@@ -240,7 +246,7 @@ export function Contacto({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-card md:p-8">
+          <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-soft md:p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="hidden" aria-hidden="true">
                 <label htmlFor="website">Website</label>
@@ -330,9 +336,9 @@ export function Contacto({
                   name="imagen"
                   accept="image/jpeg,image/png,image/webp,image/gif"
                   onChange={handleImageChange}
-                  className="w-full cursor-pointer text-sm text-zinc-600 file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-zinc-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-700 hover:file:bg-zinc-200"
+                  className="w-full cursor-pointer text-sm text-zinc-600 file:mr-4 file:cursor-pointer file:rounded-xl file:border-0 file:bg-zinc-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-700 hover:file:bg-zinc-200"
                 />
-                <p className="mt-1 text-xs text-zinc-400">
+                <p className="mt-1 text-xs text-zinc-500">
                   Máx. 5MB — JPG, PNG, WebP o GIF
                 </p>
               </div>
@@ -355,7 +361,8 @@ export function Contacto({
               </Button>
             </form>
           </div>
-        </div>
+          </div>
+        </Reveal>
       </Container>
     </section>
   );

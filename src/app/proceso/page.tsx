@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Proceso } from "@/components/home/Proceso";
 
 export const metadata: Metadata = {
   title: "Proceso",
@@ -7,17 +8,16 @@ export const metadata: Metadata = {
 
 export default function ProcesoPage() {
   return (
-    <main className="bg-brand-light">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+    <main className="bg-white">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
         <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-brand-black uppercase">
           Nuestro Proceso
         </h1>
-        <div className="mt-12 bg-white rounded-lg p-8 border-2 border-brand-grey-300">
-          <p className="text-brand-dark">
-            Contenido provisional — editable desde el panel de administración.
-          </p>
-        </div>
+        <p className="text-brand-dark text-lg max-w-2xl">
+          Así trabajamos — de la primera consulta a la instalación final.
+        </p>
       </div>
+      <Proceso showHeading={false} />
     </main>
   );
 }

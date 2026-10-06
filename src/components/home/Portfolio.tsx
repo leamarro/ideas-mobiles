@@ -6,7 +6,11 @@ import { Lightbox } from "@/components/portfolio/Lightbox";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { PORTFOLIO_CATEGORIES, PortfolioItem as PortfolioItemData } from "@/types/portfolio";
+import {
+  PORTFOLIO_CATEGORIES,
+  PORTFOLIO_CATEGORY_LABELS,
+  PortfolioItem as PortfolioItemData,
+} from "@/types/portfolio";
 import { FALLBACK_PORTFOLIO } from "@/lib/fallback-data";
 import { cn } from "@/lib/utils";
 
@@ -27,8 +31,8 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
       : items.filter((item) => item.category === selectedCategory);
 
   const handleItemClick = (item: PortfolioItemData) => {
-    const images = items.map((i) => i.image);
-    const imageIndex = items.indexOf(item);
+    const images = filteredItems.map((i) => i.image);
+    const imageIndex = filteredItems.indexOf(item);
     setLightboxImages(images);
     setLightboxIndex(imageIndex);
     setLightboxOpen(true);
@@ -61,7 +65,7 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
                   : "border border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 hover:text-zinc-950"
               )}
             >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              {PORTFOLIO_CATEGORY_LABELS[cat]}
             </button>
           ))}
         </div>

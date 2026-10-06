@@ -54,23 +54,16 @@ export function Header() {
     >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between md:h-20">
-          <Link href="/" className="flex items-center gap-3" aria-label="Ideas Móviles - Inicio">
-            <div className="relative h-11 w-11 md:h-12 md:w-12">
+          <Link href="/" className="flex items-center" aria-label="Ideas Móviles - Inicio">
+            <div className="relative h-12 w-32 md:h-14 md:w-40">
               <Image
-                src="/images/logo.webp"
-                alt="Ideas Móviles Logo"
+                src="/images/logo.png"
+                alt="Ideas Móviles"
                 fill
+                sizes="(max-width: 768px) 128px, 160px"
                 className="object-contain"
                 priority
               />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-display text-xl font-bold leading-none text-brand-black">
-                IDEAS<span className="text-brand-red-500">MÓVILES</span>
-              </span>
-              <p className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-400">
-                Imagen y Comunicación
-              </p>
             </div>
           </Link>
 

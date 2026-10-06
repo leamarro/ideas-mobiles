@@ -53,14 +53,14 @@ export function Header() {
       )}
     >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between md:h-20">
+        <div className="flex h-20 items-center justify-between md:h-24">
           <Link href="/" className="flex items-center" aria-label="Ideas Móviles - Inicio">
-            <div className="relative h-12 w-32 md:h-14 md:w-40">
+            <div className="relative h-16 w-52 md:h-20 lg:w-72">
               <Image
                 src="/images/logo.png"
                 alt="Ideas Móviles"
                 fill
-                sizes="(max-width: 768px) 128px, 160px"
+                sizes="(max-width: 1023px) 208px, 288px"
                 className="object-contain"
                 priority
               />
@@ -71,7 +71,7 @@ export function Header() {
             Cartelería integral para empresas, comercios y particulares.
           </span>
 
-          <nav className="hidden items-center gap-7 md:flex">
+          <nav className="hidden items-center gap-6 xl:gap-7 md:flex">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (

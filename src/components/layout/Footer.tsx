@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
@@ -32,9 +32,10 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             <div className="inline-block rounded-2xl bg-white p-2.5 shadow-soft">
               <div className="relative h-9 w-36">
                 <Image
-                  src="/images/logo.webp"
-                  alt="Ideas Móviles Logo"
+                  src="/images/logo.png"
+                  alt="Ideas Móviles"
                   fill
+                  sizes="144px"
                   className="object-contain object-left"
                 />
               </div>

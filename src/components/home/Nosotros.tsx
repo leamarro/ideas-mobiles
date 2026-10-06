@@ -51,9 +51,10 @@ export function Nosotros({ slogan }: NosotrosProps) {
                 <div className="animate-float-y rounded-2xl bg-white p-6 shadow-pop">
                   <div className="relative h-12 w-44 md:w-48">
                     <Image
-                      src="/images/logo.webp"
+                      src="/images/logo.png"
                       alt="Ideas Móviles"
                       fill
+                      sizes="(max-width: 768px) 176px, 192px"
                       className="object-contain object-left"
                     />
                   </div>

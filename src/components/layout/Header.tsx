@@ -53,14 +53,18 @@ export function Header() {
       )}
     >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between md:h-24">
-          <Link href="/" className="flex items-center" aria-label="Ideas Móviles - Inicio">
-            <div className="relative h-16 w-52 md:h-20 lg:w-72">
+        <div className="flex h-24 items-center justify-between md:h-28">
+          <Link
+            href="/"
+            className="flex shrink-0 items-center"
+            aria-label="Ideas Móviles - Inicio"
+          >
+            <div className="relative h-[88px] w-[88px] md:h-24 md:w-24">
               <Image
-                src="/images/logo.png"
+                src="/images/logo-icon.png"
                 alt="Ideas Móviles"
                 fill
-                sizes="(max-width: 1023px) 208px, 288px"
+                sizes="96px"
                 className="object-contain"
                 priority
               />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { MessageCircle, Phone, Mail, Instagram, MapPin, ChevronRight, Check } from "lucide-react";
+import { MessageCircle, Phone, Mail, Instagram, Facebook, MapPin, ChevronRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -22,6 +22,7 @@ interface ContactoProps {
   phone?: string;
   email?: string;
   instagram?: string;
+  facebook?: string;
   address?: string;
   showHeading?: boolean;
 }
@@ -36,6 +37,7 @@ export function Contacto({
   phone = CONTACT_PLACEHOLDERS.phone,
   email = CONTACT_PLACEHOLDERS.email,
   instagram = CONTACT_PLACEHOLDERS.instagram,
+  facebook = CONTACT_PLACEHOLDERS.facebook,
   address = CONTACT_PLACEHOLDERS.address,
   showHeading = true,
 }: ContactoProps) {
@@ -165,6 +167,15 @@ export function Contacto({
       href: `https://instagram.com/${instagram.replace("@", "")}`,
       external: true,
       icon: <Instagram className="h-5 w-5" />,
+    },
+    {
+      label: "Facebook",
+      value: facebook,
+      href: facebook.startsWith("http")
+        ? facebook
+        : `https://facebook.com/${facebook.replace("@", "")}`,
+      external: true,
+      icon: <Facebook className="h-5 w-5" />,
     },
     {
       label: "Dirección",

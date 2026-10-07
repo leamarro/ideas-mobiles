@@ -1,12 +1,17 @@
 import { Metadata } from "next";
 import { Nosotros } from "@/components/home/Nosotros";
+import { getSiteSettings } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Nosotros",
   description: "Conocé más sobre Ideas Móviles y nuestra filosofía de trabajo.",
 };
 
-export default function NosotrosPage() {
+export default async function NosotrosPage() {
+  const settings = await getSiteSettings();
+
   return (
     <main className="bg-white">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
@@ -17,7 +22,7 @@ export default function NosotrosPage() {
           Somos un equipo apasionado por la comunicación visual y la cartelería.
         </p>
       </div>
-      <Nosotros showHeading={false} />
+      <Nosotros showHeading={false} logo={settings.logo || "/images/logo.png"} />
     </main>
   );
 }

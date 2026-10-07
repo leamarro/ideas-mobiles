@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
+import { uploadImageProps } from "@/lib/upload-urls";
 import type { SiteSettings } from "@/types/site";
 
 const footerLinks = {
@@ -19,6 +20,8 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
   const whatsapp = settings?.whatsapp ?? CONTACT_PLACEHOLDERS.whatsapp;
   const email = settings?.email ?? CONTACT_PLACEHOLDERS.email;
   const instagram = settings?.instagram ?? CONTACT_PLACEHOLDERS.instagram;
+  const facebook = settings?.facebook ?? CONTACT_PLACEHOLDERS.facebook;
+  const logo = settings?.logo || "/images/logo.png";
   const description =
     settings?.description ?? "Cartelería y comunicación visual profesional. Cotizá tu proyecto.";
 
@@ -32,11 +35,12 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             <div className="inline-block rounded-2xl bg-white p-2.5 shadow-soft">
               <div className="relative h-9 w-36">
                 <Image
-                  src="/images/logo.png"
+                  src={logo}
                   alt="Ideas Móviles"
                   fill
                   sizes="144px"
                   className="object-contain object-left"
+                  {...uploadImageProps(logo)}
                 />
               </div>
             </div>
@@ -76,7 +80,11 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
                 </svg>
               </a>
               <a
-                href={`https://facebook.com/${CONTACT_PLACEHOLDERS.facebook}`}
+                href={
+                  facebook.startsWith("http")
+                    ? facebook
+                    : `https://facebook.com/${facebook.replace("@", "")}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -149,6 +157,18 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
                 className="block text-sm text-zinc-400 transition-colors hover:text-white"
               >
                 {instagram}
+              </a>
+              <a
+                href={
+                  facebook.startsWith("http")
+                    ? facebook
+                    : `https://facebook.com/${facebook.replace("@", "")}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-sm text-zinc-400 transition-colors hover:text-white"
+              >
+                {facebook}
               </a>
             </div>
           </div>

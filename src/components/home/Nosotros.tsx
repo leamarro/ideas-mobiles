@@ -2,13 +2,15 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { uploadImageProps } from "@/lib/upload-urls";
 
 interface NosotrosProps {
   slogan?: string;
+  logo?: string;
   showHeading?: boolean;
 }
 
-export function Nosotros({ slogan, showHeading = true }: NosotrosProps) {
+export function Nosotros({ slogan, logo = "/images/logo.png", showHeading = true }: NosotrosProps) {
   return (
     <section id="nosotros" className="bg-white py-20 md:py-28">
       <Container maxWidth="full">
@@ -55,11 +57,12 @@ export function Nosotros({ slogan, showHeading = true }: NosotrosProps) {
                 <div className="animate-float-y rounded-2xl bg-white p-6 shadow-pop">
                   <div className="relative h-12 w-44 md:w-48">
                     <Image
-                      src="/images/logo.png"
+                      src={logo}
                       alt="Ideas Móviles"
                       fill
                       sizes="(max-width: 768px) 176px, 192px"
                       className="object-contain object-left"
+                      {...uploadImageProps(logo)}
                     />
                   </div>
                 </div>

@@ -83,6 +83,7 @@ const siteSettings = {
   phone: "+54 291 454 3333",
   email: "ideasmoviles@gmail.com",
   instagram: "@IDEASMOVILES",
+  facebook: "IDEASMOVILES",
   address: "Dirección pendiente de confirmar",
   heroTitle: "IDEASMÓVILES",
   heroSubtitle: "Cartelería y comunicación visual profesional",

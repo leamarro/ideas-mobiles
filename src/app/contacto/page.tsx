@@ -27,6 +27,7 @@ export default async function ContactoPage() {
         phone={settings.phone}
         email={settings.email}
         instagram={settings.instagram}
+        facebook={settings.facebook}
         address={settings.address}
         showHeading={false}
       />

@@ -21,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteName = settings.title;
   const defaultTitle = `${settings.title} | Cartelería y Comunicación Visual`;
   const description = settings.description;
+  const favicon = settings.favicon;
 
   return {
     title: {
@@ -28,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${siteName}`,
     },
     description,
+    ...(favicon ? { icons: { icon: favicon } } : {}),
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
     openGraph: {
       type: "website",

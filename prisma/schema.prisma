@@ -57,6 +57,7 @@ model SiteSettings {
   phone         String
   email         String
   instagram     String
+  facebook      String   @default("")
   address       String
   heroTitle     String
   heroSubtitle  String

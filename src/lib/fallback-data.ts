@@ -39,6 +39,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   phone: CONTACT_PLACEHOLDERS.phone,
   email: CONTACT_PLACEHOLDERS.email,
   instagram: CONTACT_PLACEHOLDERS.instagram,
+  facebook: CONTACT_PLACEHOLDERS.facebook,
   address: CONTACT_PLACEHOLDERS.address,
   heroTitle: "IDEASMÓVILES",
   heroSubtitle: "Cartelería y comunicación visual profesional",

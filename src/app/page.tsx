@@ -24,13 +24,14 @@ export default async function Home() {
       <Header />
       <main>
         <Hero
+          subtitle={settings.heroSubtitle}
           text={settings.heroText}
           buttonText={settings.heroButtonText}
           buttonLink={settings.heroButtonLink}
         />
         <Servicios services={services} />
         <Portfolio items={portfolioItems} />
-        <Nosotros />
+        <Nosotros logo={settings.logo || "/images/logo.png"} />
         <Proceso />
         <CTA />
         <Contacto
@@ -38,6 +39,7 @@ export default async function Home() {
           phone={settings.phone}
           email={settings.email}
           instagram={settings.instagram}
+          facebook={settings.facebook}
           address={settings.address}
         />
       </main>

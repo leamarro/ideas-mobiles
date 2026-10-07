@@ -8,6 +8,7 @@ export interface SiteSettings {
   phone: string;
   email: string;
   instagram: string;
+  facebook: string;
   address: string;
   heroTitle: string;
   heroSubtitle: string;

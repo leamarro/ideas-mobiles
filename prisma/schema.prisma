@@ -65,6 +65,7 @@ model SiteSettings {
   heroButtonText String
   heroButtonLink String
   heroImage     String? @default("/images/imagen-fondo2.png")
+  heroImages    String  @default("[]")
   updatedAt     DateTime @updatedAt
 
   @@map("site_settings")

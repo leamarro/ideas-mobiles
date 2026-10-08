@@ -4,12 +4,14 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 interface HeroProps {
+  subtitle?: string;
   text?: string;
   buttonText?: string;
   buttonLink?: string;
 }
 
 export function Hero({
+  subtitle = "Cartelería y comunicación visual profesional",
   text = "Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria. Convertimos tu idea en impacto visual.",
   buttonText = "Cotizar ahora",
   buttonLink = "/contacto",
@@ -49,6 +51,14 @@ export function Hero({
         />
 
         <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-[8%]">
+          <span
+            className="animate-slide-up mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
+            style={{ animationDelay: "0ms" }}
+          >
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
+            {subtitle}
+          </span>
+
           <p
             className="animate-slide-up max-w-md text-sm leading-relaxed text-zinc-300 sm:max-w-lg sm:text-base md:text-lg"
             style={{ animationDelay: "80ms" }}

@@ -59,16 +59,14 @@ export function Header() {
             className="flex shrink-0 items-center"
             aria-label="Ideas Móviles - Inicio"
           >
-            <div className="relative h-[88px] w-[88px] md:h-24 md:w-24">
-              <Image
-                src="/images/logo-icon.png"
-                alt="Ideas Móviles"
-                fill
-                sizes="96px"
-                className="object-contain"
-                priority
-              />
-            </div>
+            <Image
+              src="/images/logo.png"
+              alt="Ideas Móviles"
+              width={2170}
+              height={725}
+              priority
+              className="h-11 w-auto object-contain md:h-14"
+            />
           </Link>
 
           <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-zinc-500 xl:block">

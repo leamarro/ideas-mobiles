@@ -83,6 +83,7 @@ model Category {
 model ContactMessage {
   id        String   @id @default(cuid())
   name      String
+  empresa   String?
   whatsapp  String?
   service   String?
   message   String

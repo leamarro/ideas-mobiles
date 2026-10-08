@@ -20,6 +20,7 @@ const EDITABLE_FIELDS = [
   "heroButtonText",
   "heroButtonLink",
   "heroImage",
+  "heroImages",
 ] as const;
 
 export async function GET() {
@@ -44,6 +45,15 @@ export async function PATCH(request: Request) {
 
   const data: Record<string, string | null> = {};
   for (const field of EDITABLE_FIELDS) {
+    if (field === "heroImages") {
+      if (Array.isArray(body[field])) {
+        const list = body[field]
+          .map((v: unknown) => (typeof v === "string" ? v.trim() : ""))
+          .filter(Boolean);
+        data[field] = JSON.stringify(list);
+      }
+      continue;
+    }
     const value = body[field];
     if (typeof value === "string") {
       data[field] = value.trim();
@@ -75,6 +85,7 @@ export async function PATCH(request: Request) {
           heroButtonText: "",
           heroButtonLink: "",
           heroImage: "/images/imagen-fondo2.png",
+          heroImages: '["/images/imagen-fondo2.png"]',
           ...data,
         },
       });

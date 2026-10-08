@@ -9,10 +9,6 @@ export const metadata: Metadata = {
   description: "Configuración general del sitio desde el panel de administración.",
 };
 
-const FIELD_DEFAULTS: Record<string, string> = {
-  heroImage: "/images/imagen-fondo2.png",
-};
-
 const sections: SettingsSection[] = [
   {
     title: "Identidad visual",
@@ -30,7 +26,7 @@ const sections: SettingsSection[] = [
         name: "favicon",
         label: "Ícono del navegador (favicon)",
         type: "image",
-        placeholder: "/images/logo-icon.png",
+        placeholder: "/images/logo.png",
         hint: "Imagen cuadrada que aparece en la pestaña del navegador y al guardar el sitio como favorito.",
       },
     ],
@@ -59,11 +55,11 @@ const sections: SettingsSection[] = [
       "Imagen y textos de la primera pantalla de la página de inicio.",
     fields: [
       {
-        name: "heroImage",
-        label: "Imagen de portada",
-        type: "image",
+        name: "heroImages",
+        label: "Imágenes de portada",
+        type: "image-list",
         placeholder: "/images/imagen-fondo2.png",
-        hint: "Imagen de fondo de la primera pantalla. Podés subir una imagen nueva o pegar la URL de una existente. Si la quitás, la portada queda con fondo oscuro y solo los textos.",
+        hint: "Imágenes de fondo de la primera pantalla. Si subís más de una, se muestran como carrusel automático (con flechas y puntitos). Si las quitás todas, la portada queda con fondo oscuro y solo los textos.",
       },
       {
         name: "heroSubtitle",
@@ -94,11 +90,12 @@ const sections: SettingsSection[] = [
 export default async function AdminConfigPage() {
   const settings = await getSiteSettings();
 
-  const initial: Record<string, string> = {};
+  const initial: Record<string, string | string[]> = {};
   for (const section of sections) {
     for (const field of section.fields) {
       const value = settings[field.name as keyof typeof settings];
-      initial[field.name] = typeof value === "string" ? value : (FIELD_DEFAULTS[field.name] ?? "");
+      initial[field.name] =
+        Array.isArray(value) ? value : typeof value === "string" ? value : "";
     }
   }
 

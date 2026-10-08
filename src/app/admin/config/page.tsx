@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   description: "Configuración general del sitio desde el panel de administración.",
 };
 
+const FIELD_DEFAULTS: Record<string, string> = {
+  heroImage: "/images/imagen-fondo2.png",
+};
+
 const sections: SettingsSection[] = [
   {
     title: "Identidad visual",
@@ -51,8 +55,16 @@ const sections: SettingsSection[] = [
   },
   {
     title: "Portada (Hero)",
-    description: "Textos de la primera pantalla de la página de inicio.",
+    description:
+      "Imagen y textos de la primera pantalla de la página de inicio.",
     fields: [
+      {
+        name: "heroImage",
+        label: "Imagen de portada",
+        type: "image",
+        placeholder: "/images/imagen-fondo2.png",
+        hint: "Imagen de fondo de la primera pantalla. Podés subir una imagen nueva o pegar la URL de una existente. Si la quitás, la portada queda con fondo oscuro y solo los textos.",
+      },
       {
         name: "heroSubtitle",
         label: "Texto destacado (eyebrow)",
@@ -86,7 +98,7 @@ export default async function AdminConfigPage() {
   for (const section of sections) {
     for (const field of section.fields) {
       const value = settings[field.name as keyof typeof settings];
-      initial[field.name] = typeof value === "string" ? value : "";
+      initial[field.name] = typeof value === "string" ? value : (FIELD_DEFAULTS[field.name] ?? "");
     }
   }
 

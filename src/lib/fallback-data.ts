@@ -47,6 +47,6 @@ export const FALLBACK_SETTINGS: SiteSettings = {
     "Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria. Convertimos tu idea en impacto visual.",
   heroButtonText: "Cotizar ahora",
   heroButtonLink: "/contacto",
-  heroImage: "/images/imagen-fondo2.png",
+  heroImages: ["/images/imagen-fondo2.png"],
   updatedAt: now,
 };

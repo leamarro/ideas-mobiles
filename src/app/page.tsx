@@ -28,6 +28,7 @@ export default async function Home() {
           text={settings.heroText}
           buttonText={settings.heroButtonText}
           buttonLink={settings.heroButtonLink}
+          image={settings.heroImage}
         />
         <Servicios services={services} />
         <Portfolio items={portfolioItems} />

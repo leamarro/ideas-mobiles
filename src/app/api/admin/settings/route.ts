@@ -19,6 +19,7 @@ const EDITABLE_FIELDS = [
   "heroText",
   "heroButtonText",
   "heroButtonLink",
+  "heroImage",
 ] as const;
 
 export async function GET() {
@@ -73,6 +74,7 @@ export async function PATCH(request: Request) {
           heroText: "",
           heroButtonText: "",
           heroButtonLink: "",
+          heroImage: "/images/imagen-fondo2.png",
           ...data,
         },
       });

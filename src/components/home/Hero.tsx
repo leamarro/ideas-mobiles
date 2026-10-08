@@ -17,7 +17,7 @@ export function Hero({
   buttonLink = "/contacto",
 }: HeroProps) {
   const phrases = (
-    <div className="flex flex-col items-center gap-3 text-center">
+    <div className="flex flex-col items-center gap-3 text-center lg:items-start lg:text-left">
       <span
         className="animate-slide-up inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-center text-[9px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md sm:text-[10px]"
         style={{ animationDelay: "0ms" }}
@@ -27,7 +27,7 @@ export function Hero({
       </span>
 
       <p
-        className="animate-slide-up max-w-xl text-xs leading-relaxed text-zinc-300 sm:text-sm"
+        className="animate-slide-up max-w-xl text-xs leading-relaxed text-zinc-300 sm:text-sm lg:max-w-md"
         style={{ animationDelay: "80ms" }}
       >
         {text}
@@ -36,7 +36,7 @@ export function Hero({
   );
 
   const buttons = (
-    <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
+    <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:justify-center sm:gap-4 lg:w-64 lg:flex-col lg:gap-3">
       <a
         href={buttonLink}
         className="animate-slide-up group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-6 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:px-8"
@@ -60,7 +60,7 @@ export function Hero({
     <section className="relative w-full overflow-hidden bg-black">
       <h1 className="sr-only">Tus ideas en movimiento</h1>
 
-      <div className="relative aspect-[1280/699] max-h-[72svh] w-full">
+      <div className="relative aspect-[1280/699] w-full">
         <Image
           src="/images/imgagenpc.jpg"
           alt="Ideas Móviles - Sitio web en pantalla de escritorio"
@@ -68,7 +68,7 @@ export function Hero({
           priority
           quality={100}
           sizes="100vw"
-          className="object-cover object-[center_45%]"
+          className="object-cover"
         />
 
         <div
@@ -76,11 +76,9 @@ export function Hero({
           aria-hidden="true"
         />
 
-        <div className="absolute inset-x-0 bottom-0 hidden lg:block">
-          <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 pb-10 text-center">
-            {phrases}
-            {buttons}
-          </div>
+        <div className="absolute bottom-[10%] left-[8%] hidden w-[min(46%,560px)] flex-col items-start gap-5 lg:flex">
+          {phrases}
+          {buttons}
         </div>
       </div>
 

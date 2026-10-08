@@ -5,11 +5,12 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
 import { ImageField } from "./image-field";
+import { ImageListField } from "./image-list-field";
 
 export interface SettingsField {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "image";
+  type?: "text" | "textarea" | "image" | "image-list";
   placeholder?: string;
   hint?: string;
 }
@@ -21,7 +22,7 @@ export interface SettingsSection {
 }
 
 interface SettingsFormProps {
-  initial: Record<string, string>;
+  initial: Record<string, string | string[]>;
   fields?: SettingsField[];
   sections?: SettingsSection[];
   title?: string;
@@ -36,7 +37,7 @@ const hintClass = "mt-1 text-xs leading-relaxed text-brand-grey-500";
 export function SettingsForm({ initial, fields, sections, title }: SettingsFormProps) {
   const router = useRouter();
   const { toast, showToast } = useToast();
-  const [values, setValues] = useState<Record<string, string>>(initial);
+  const [values, setValues] = useState<Record<string, string | string[]>>(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,7 +52,7 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
     setError(null);
 
     try {
-      const payload: Record<string, string> = {};
+      const payload: Record<string, string | string[]> = {};
       for (const field of allFields) {
         payload[field.name] = values[field.name] ?? "";
       }
@@ -79,7 +80,7 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
     }
   }
 
-  function setValue(name: string, value: string) {
+  function setValue(name: string, value: string | string[]) {
     setValues((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -128,16 +129,35 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
               <div
                 key={field.name}
                 className={
-                  field.type === "textarea" || field.type === "image"
+                  field.type === "textarea" ||
+                  field.type === "image" ||
+                  field.type === "image-list"
                     ? "md:col-span-2"
                     : undefined
                 }
               >
-                {field.type === "image" ? (
+                {field.type === "image-list" ? (
+                  <>
+                    <ImageListField
+                      label={field.label}
+                      value={
+                        Array.isArray(values[field.name])
+                          ? (values[field.name] as string[])
+                          : []
+                      }
+                      onChange={(value) => setValue(field.name, value)}
+                    />
+                    {field.hint && <p className={hintClass}>{field.hint}</p>}
+                  </>
+                ) : field.type === "image" ? (
                   <>
                     <ImageField
                       label={field.label}
-                      value={values[field.name] ?? ""}
+                      value={
+                        typeof values[field.name] === "string"
+                          ? (values[field.name] as string)
+                          : ""
+                      }
                       onChange={(value) => setValue(field.name, value)}
                       placeholder={field.placeholder}
                     />
@@ -154,7 +174,11 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
                         rows={3}
                         className={inputClass}
                         placeholder={field.placeholder}
-                        value={values[field.name] ?? ""}
+                        value={
+                          typeof values[field.name] === "string"
+                            ? (values[field.name] as string)
+                            : ""
+                        }
                         onChange={(e) => setValue(field.name, e.target.value)}
                       />
                     ) : (
@@ -163,7 +187,11 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
                         type="text"
                         className={inputClass}
                         placeholder={field.placeholder}
-                        value={values[field.name] ?? ""}
+                        value={
+                          typeof values[field.name] === "string"
+                            ? (values[field.name] as string)
+                            : ""
+                        }
                         onChange={(e) => setValue(field.name, e.target.value)}
                       />
                     )}

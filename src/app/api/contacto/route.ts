@@ -39,11 +39,13 @@ export async function POST(request: Request) {
   if (honeypot) return NextResponse.json({ ok: true }, { status: 201 });
 
   const name = String(formData.get("nombre") ?? "").trim();
+  const empresa = String(formData.get("empresa") ?? "").trim();
   const whatsapp = String(formData.get("whatsapp") ?? "").trim();
   const service = String(formData.get("servicio") ?? "").trim();
   const message = String(formData.get("mensaje") ?? "").trim();
 
   if (name.length < 2 || name.length > 80) return bad("Ingresá tu nombre (2 a 80 caracteres)");
+  if (empresa.length > 120) return bad("El nombre de la empresa no puede superar los 120 caracteres");
   if (whatsapp.length > 30) return bad("El WhatsApp no puede superar los 30 caracteres");
   if (service.length > 40) return bad("El servicio no puede superar los 40 caracteres");
   if (message.length < 5 || message.length > 2000)
@@ -78,6 +80,7 @@ export async function POST(request: Request) {
   await prisma.contactMessage.create({
     data: {
       name,
+      empresa: empresa || null,
       whatsapp: whatsapp || null,
       service: service || null,
       message,

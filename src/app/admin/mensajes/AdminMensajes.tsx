@@ -84,6 +84,7 @@ export function AdminMensajes({ initialMessages }: { initialMessages: Mensaje[] 
             <tr>
               <th className="px-4 py-3 font-display font-semibold">Fecha</th>
               <th className="px-4 py-3 font-display font-semibold">Nombre</th>
+              <th className="px-4 py-3 font-display font-semibold">Empresa</th>
               <th className="px-4 py-3 font-display font-semibold">Servicio</th>
               <th className="px-4 py-3 font-display font-semibold">Mensaje</th>
               <th className="px-4 py-3 font-display font-semibold">Estado</th>
@@ -93,7 +94,7 @@ export function AdminMensajes({ initialMessages }: { initialMessages: Mensaje[] 
           <tbody className="divide-y divide-brand-grey-200">
             {initialMessages.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-brand-dark">
+                <td colSpan={7} className="px-4 py-8 text-center text-brand-dark">
                   No hay mensajes todavía. Los envíos del formulario aparecen acá.
                 </td>
               </tr>
@@ -121,6 +122,7 @@ export function AdminMensajes({ initialMessages }: { initialMessages: Mensaje[] 
                     </a>
                   )}
                 </td>
+                <td className="px-4 py-3 text-brand-dark">{item.empresa || "—"}</td>
                 <td className="px-4 py-3 text-brand-dark">{item.service || "—"}</td>
                 <td className="max-w-md px-4 py-3">
                   <span className="line-clamp-3 text-brand-dark" title={item.message}>

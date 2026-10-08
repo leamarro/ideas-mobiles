@@ -35,7 +35,16 @@ export async function getPortfolioItems(): Promise<PortfolioItem[]> {
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
     const settings = await prisma.siteSettings.findFirst({ where: { id: "default" } });
-    return settings ?? FALLBACK_SETTINGS;
+    if (!settings) return FALLBACK_SETTINGS;
+
+    let images: string[] = [];
+    try {
+      const parsed = JSON.parse(settings.heroImages ?? "[]");
+      if (Array.isArray(parsed)) images = parsed.filter((x) => typeof x === "string");
+    } catch {
+      images = [];
+    }
+    return { ...settings, heroImages: images };
   } catch {
     return FALLBACK_SETTINGS;
   }

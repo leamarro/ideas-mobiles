@@ -59,14 +59,15 @@ export function Hero({
     <section className="relative w-full overflow-hidden bg-black">
       <h1 className="sr-only">Tus ideas en movimiento</h1>
 
-      <div className="relative mx-auto aspect-[958/523] w-full max-w-[min(1200px,calc((100svh_-_7rem)*1.83))]">
+      <div className="relative aspect-[1280/699] w-full">
         <Image
           src="/images/imgagenpc.jpg"
           alt="Ideas Móviles - Sitio web en pantalla de escritorio"
           fill
           priority
+          quality={100}
           sizes="100vw"
-          className="object-contain"
+          className="object-cover"
         />
 
         <div

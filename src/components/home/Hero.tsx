@@ -1,17 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { uploadImageProps } from "@/lib/upload-urls";
 
 const DEFAULT_HERO_IMAGE = "/images/imagen-fondo2.png";
+const AUTOPLAY_MS = 6000;
 
 interface HeroProps {
   subtitle?: string;
   text?: string;
   buttonText?: string;
   buttonLink?: string;
-  image?: string | null;
+  images?: string[] | null;
 }
 
 export function Hero({
@@ -19,55 +21,81 @@ export function Hero({
   text = "Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria. Convertimos tu idea en impacto visual.",
   buttonText = "Cotizar ahora",
   buttonLink = "/contacto",
-  image,
+  images,
 }: HeroProps) {
-  const src = (image ?? DEFAULT_HERO_IMAGE).trim();
-  const hasImage = src.length > 0;
-  const imgProps = uploadImageProps(src);
-  const isDefault = src === DEFAULT_HERO_IMAGE;
+  const slides = (images ?? []).map((src) => src.trim()).filter(Boolean);
+  const total = slides.length;
+  const single = total === 1;
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    setCurrent(0);
+  }, [total]);
+
+  useEffect(() => {
+    if (total < 2 || paused) return;
+    const timer = setInterval(() => {
+      setCurrent((c) => (c + 1) % total);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(timer);
+  }, [total, paused]);
+
+  function go(direction: -1 | 1) {
+    setCurrent((c) => (c + direction + total) % total);
+  }
+
+  function slideClass(src: string, index: number) {
+    if (single) {
+      return src === DEFAULT_HERO_IMAGE
+        ? "object-cover md:bottom-auto md:top-[-11.111%] md:h-[111.111%] md:object-fill"
+        : "object-cover";
+    }
+    return `object-cover transition-opacity duration-[1500ms] ${
+      index === current ? "opacity-100" : "opacity-0"
+    }`;
+  }
 
   return (
-    <section className="relative flex min-h-[92svh] md:min-h-[65svh] w-full flex-col justify-center overflow-hidden bg-zinc-950">
+    <section
+      className="relative flex min-h-[92svh] md:min-h-[65svh] w-full flex-col justify-center overflow-hidden bg-zinc-950"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <h1 className="sr-only">Ideas Móviles — Imagen y Comunicación</h1>
-      {hasImage && (
+      {total > 0 && (
         <div className="absolute inset-0 hidden md:block" aria-hidden="true">
-          <Image
-            src={src}
-            alt=""
-            fill
-            loading="eager"
-            sizes="100vw"
-            className="scale-110 object-cover blur-2xl opacity-70"
-            {...imgProps}
-          />
+          {slides.map((src, index) => (
+            <Image
+              key={`blur-${index}`}
+              src={src}
+              alt=""
+              fill
+              loading="eager"
+              sizes="100vw"
+              className={`scale-110 object-cover blur-2xl transition-opacity duration-[1500ms] ${
+                index === current ? "opacity-70" : "opacity-0"
+              }`}
+              {...uploadImageProps(src)}
+            />
+          ))}
           <div className="absolute inset-0 bg-zinc-950/55" />
         </div>
       )}
 
       <div className="absolute inset-0 overflow-hidden md:relative md:aspect-[1743/786] md:w-full">
-        {hasImage &&
-          (isDefault ? (
-            <Image
-              src={src}
-              alt=""
-              width={1743}
-              height={902}
-              priority
-              sizes="100vw"
-              className="absolute inset-0 h-full w-full object-cover md:bottom-auto md:top-[-11.111%] md:h-[111.111%] md:object-fill"
-              {...imgProps}
-            />
-          ) : (
-            <Image
-              src={src}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-              {...imgProps}
-            />
-          ))}
+        {slides.map((src, index) => (
+          <Image
+            key={`slide-${index}`}
+            src={src}
+            alt=""
+            fill
+            {...(index === 0 ? { priority: true } : {})}
+            sizes="100vw"
+            className={slideClass(src, index)}
+            {...uploadImageProps(src)}
+          />
+        ))}
         <div
           className="absolute inset-0 bg-[linear-gradient(to_top_right,rgb(9_9_11/0.92)_0%,rgb(9_9_11/0.7)_28%,rgb(9_9_11/0.3)_55%,transparent_78%)]"
           aria-hidden="true"
@@ -112,6 +140,42 @@ export function Hero({
             </a>
           </div>
         </div>
+
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              className="absolute left-3 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/25 bg-black/30 p-2 text-white backdrop-blur-md transition-colors hover:bg-black/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:inline-flex"
+              aria-label="Imagen anterior"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/25 bg-black/30 p-2 text-white backdrop-blur-md transition-colors hover:bg-black/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:inline-flex"
+              aria-label="Imagen siguiente"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
+              {slides.map((src, index) => (
+                <button
+                  key={`dot-${index}`}
+                  type="button"
+                  onClick={() => setCurrent(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === current
+                      ? "w-6 bg-brand-red-500"
+                      : "w-2 bg-white/50 hover:bg-white/80"
+                  }`}
+                  aria-label={`Ir a la imagen ${index + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

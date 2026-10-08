@@ -10,6 +10,7 @@ import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
 
 interface FormData {
   nombre: string;
+  empresa: string;
   whatsapp: string;
   servicio: string;
   mensaje: string;
@@ -43,6 +44,7 @@ export function Contacto({
 }: ContactoProps) {
   const [formData, setFormData] = useState<FormData>({
     nombre: "",
+    empresa: "",
     whatsapp: "",
     servicio: "",
     mensaje: "",
@@ -91,6 +93,7 @@ export function Contacto({
       try {
         const payload = new FormData();
         payload.append("nombre", formData.nombre);
+        payload.append("empresa", formData.empresa);
         payload.append("whatsapp", formData.whatsapp);
         payload.append("servicio", formData.servicio);
         payload.append("mensaje", formData.mensaje);
@@ -284,6 +287,21 @@ export function Contacto({
                   required
                   className={inputClassName}
                   placeholder="Tu nombre"
+                />
+              </div>
+              <div>
+                <label htmlFor="empresa" className={labelClassName}>
+                  Empresa (opcional)
+                </label>
+                <input
+                  type="text"
+                  id="empresa"
+                  name="empresa"
+                  value={formData.empresa}
+                  onChange={handleChange}
+                  maxLength={120}
+                  className={inputClassName}
+                  placeholder="Nombre de tu empresa"
                 />
               </div>
               <div>

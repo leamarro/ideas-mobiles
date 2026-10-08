@@ -15,6 +15,6 @@ export interface SiteSettings {
   heroText: string;
   heroButtonText: string;
   heroButtonLink: string;
-  heroImage: string | null;
+  heroImages: string[];
   updatedAt: Date;
 }

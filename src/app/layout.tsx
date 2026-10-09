@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Oswald } from "next/font/google";
 import { getSiteSettings } from "@/lib/data";
+import { BackToTop } from "@/components/layout/BackToTop";
 import "./globals.css";
 
 const inter = Inter({
@@ -55,6 +56,7 @@ export default function RootLayout({
     <html lang="es" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
       <body className="bg-white text-black antialiased">
         {children}
+        <BackToTop />
       </body>
     </html>
   );

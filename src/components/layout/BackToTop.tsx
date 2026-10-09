@@ -21,13 +21,13 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Volver arriba"
       title="Volver arriba"
-      className={`fixed bottom-24 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border-2 border-brand-grey-200 bg-white text-brand-dark shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-brand-red-500 hover:text-brand-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 ${
+      className={`fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-brand-red-500 text-white shadow-xl transition-all duration-300 hover:scale-110 hover:bg-brand-red-600 focus:outline-none focus:ring-2 focus:ring-brand-red-400 focus:ring-offset-2 focus:ring-offset-white ${
         isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-10 pointer-events-none"
       }`}
     >
-      <ArrowUp className="h-5 w-5" />
+      <ArrowUp className="h-7 w-7" />
     </button>
   );
 }

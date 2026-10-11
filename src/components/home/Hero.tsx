@@ -106,38 +106,77 @@ export function Hero({
         />
 
         <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-[8%]">
-          <span
-            className="animate-slide-up mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
-            style={{ animationDelay: "0ms" }}
-          >
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
-            {subtitle}
-          </span>
-
-          <p
-            className="animate-slide-up max-w-md text-sm leading-relaxed text-zinc-300 sm:max-w-lg sm:text-base md:text-lg"
-            style={{ animationDelay: "80ms" }}
-          >
-            {text}
-          </p>
-
-          <div
-            className="animate-slide-up mt-6 flex flex-col gap-4 sm:flex-row sm:items-center"
-            style={{ animationDelay: "160ms" }}
-          >
-            <a
-              href={buttonLink}
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+          <div className="lg:hidden">
+            <span
+              className="animate-slide-up mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
+              style={{ animationDelay: "0ms" }}
             >
-              {buttonText}
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </a>
-            <a
-              href="/trabajos"
-              className="inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
+              {subtitle}
+            </span>
+
+            <p
+              className="animate-slide-up max-w-md text-sm leading-relaxed text-zinc-300 sm:max-w-lg sm:text-base md:text-lg"
+              style={{ animationDelay: "80ms" }}
             >
-              Ver trabajos
-            </a>
+              {text}
+            </p>
+
+            <div
+              className="animate-slide-up mt-6 flex flex-col gap-4 sm:flex-row sm:items-center"
+              style={{ animationDelay: "160ms" }}
+            >
+              <a
+                href={buttonLink}
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+              >
+                {buttonText}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </a>
+              <a
+                href="/trabajos"
+                className="inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+              >
+                Ver trabajos
+              </a>
+            </div>
+          </div>
+
+          <div className="hidden items-center gap-6 lg:flex">
+            <div className="flex flex-1 justify-start">
+              <a
+                href="/trabajos"
+                className="animate-slide-up inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                style={{ animationDelay: "160ms" }}
+              >
+                Ver trabajos
+              </a>
+            </div>
+            <div className="flex min-w-0 max-w-[420px] flex-col items-center gap-4 text-center">
+              <span
+                className="animate-slide-up inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
+                style={{ animationDelay: "0ms" }}
+              >
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
+                {subtitle}
+              </span>
+              <p
+                className="animate-slide-up text-sm leading-relaxed text-zinc-300 sm:text-base md:text-lg"
+                style={{ animationDelay: "80ms" }}
+              >
+                {text}
+              </p>
+            </div>
+            <div className="flex flex-1 justify-end">
+              <a
+                href={buttonLink}
+                className="animate-slide-up group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
+                style={{ animationDelay: "240ms" }}
+              >
+                {buttonText}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </a>
+            </div>
           </div>
         </div>
 

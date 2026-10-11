@@ -105,7 +105,7 @@ export function Hero({
           aria-hidden="true"
         />
 
-        <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-10">
+        <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-6">
           <div className="lg:hidden">
             <span
               className="animate-slide-up mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
@@ -142,7 +142,7 @@ export function Hero({
             </div>
           </div>
 
-          <div className="hidden items-center gap-6 lg:flex">
+          <div className="hidden items-end gap-6 lg:flex">
             <div className="flex flex-1 justify-start">
               <a
                 href="/trabajos"
@@ -152,7 +152,7 @@ export function Hero({
                 Ver trabajos
               </a>
             </div>
-            <div className="flex min-w-0 max-w-[420px] flex-col items-center gap-4 text-center">
+            <div className="flex min-w-0 max-w-[520px] flex-col items-center gap-3 text-center">
               <span
                 className="animate-slide-up inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"
                 style={{ animationDelay: "0ms" }}
@@ -198,7 +198,7 @@ export function Hero({
             >
               <ChevronRight className="h-5 w-5" />
             </button>
-            <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
+            <div className="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
               {slides.map((src, index) => (
                 <button
                   key={`dot-${index}`}

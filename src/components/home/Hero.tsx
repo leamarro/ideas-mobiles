@@ -83,7 +83,7 @@ export function Hero({
         </div>
       )}
 
-      <div className="absolute inset-0 overflow-hidden md:relative md:aspect-[1743/786] md:w-full">
+      <div className="absolute inset-0 overflow-hidden md:relative md:aspect-[1743/700] md:w-full">
         {slides.map((src, index) => (
           <Image
             key={`slide-${index}`}
@@ -105,7 +105,7 @@ export function Hero({
           aria-hidden="true"
         />
 
-        <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-[8%]">
+        <div className="absolute inset-0 z-10 flex flex-col justify-end px-4 pb-[9%] pt-32 sm:px-6 lg:px-10 lg:pb-10">
           <div className="lg:hidden">
             <span
               className="animate-slide-up mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-zinc-200 backdrop-blur-md"

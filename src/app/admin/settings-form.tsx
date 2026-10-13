@@ -1,16 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
+import { AccentText } from "@/components/ui/AccentText";
 import { ImageField } from "./image-field";
 import { ImageListField } from "./image-list-field";
 
 export interface SettingsField {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "image" | "image-list" | "color";
+  type?: "text" | "textarea" | "image" | "image-list" | "color" | "accent";
   placeholder?: string;
   hint?: string;
 }
@@ -34,6 +35,29 @@ const labelClass =
   "block text-sm font-display font-semibold text-brand-black mb-1 uppercase";
 const hintClass = "mt-1 text-xs leading-relaxed text-brand-grey-500";
 
+interface AccentParts {
+  before: string;
+  accent: string;
+  after: string;
+}
+
+function splitAccent(value: string): AccentParts {
+  const match = value.match(/^([\s\S]*?)\{([^}]*)\}([\s\S]*)$/);
+  if (match) {
+    return { before: match[1], accent: match[2], after: match[3] };
+  }
+  return { before: value, accent: "", after: "" };
+}
+
+function joinAccent(parts: AccentParts): string {
+  if (!parts.accent) return `${parts.before}${parts.after}`;
+  return `${parts.before}{${parts.accent}}${parts.after}`;
+}
+
+function asString(value: string | string[] | undefined): string {
+  return typeof value === "string" ? value : "";
+}
+
 export function SettingsForm({ initial, fields, sections, title }: SettingsFormProps) {
   const router = useRouter();
   const { toast, showToast } = useToast();
@@ -41,10 +65,19 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const groups: SettingsSection[] =
-    sections ??
-    (fields?.length ? [{ title: "", description: undefined, fields }] : []);
-  const allFields = groups.flatMap((group) => group.fields);
+  const groups: SettingsSection[] = useMemo(
+    () =>
+      sections ??
+      (fields?.length ? [{ title: "", description: undefined, fields }] : []),
+    [sections, fields]
+  );
+  const showTabs = groups.length > 1;
+
+  const [activeTab, setActiveTab] = useState(0);
+  const safeTab = Math.min(activeTab, Math.max(groups.length - 1, 0));
+  const visibleGroups = showTabs ? [groups[safeTab]] : groups;
+
+  const allFields = useMemo(() => groups.flatMap((group) => group.fields), [groups]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,20 +117,151 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
     setValues((prev) => ({ ...prev, [name]: value }));
   }
 
+  function renderAccent(field: SettingsField) {
+    const value = asString(values[field.name]);
+    const parts = splitAccent(value);
+
+    const update = (patch: Partial<AccentParts>) =>
+      setValue(field.name, joinAccent({ ...parts, ...patch }));
+
+    return (
+      <>
+        <label className={labelClass}>{field.label}</label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <input
+            type="text"
+            className={inputClass}
+            placeholder="Texto"
+            aria-label={`${field.label} — texto`}
+            value={parts.before}
+            onChange={(e) => update({ before: e.target.value })}
+          />
+          <input
+            type="text"
+            className={inputClass}
+            placeholder="Palabra en color"
+            aria-label={`${field.label} — palabra en color`}
+            value={parts.accent}
+            onChange={(e) => update({ accent: e.target.value })}
+          />
+          <input
+            type="text"
+            className={inputClass}
+            placeholder="Texto después (opcional)"
+            aria-label={`${field.label} — texto después`}
+            value={parts.after}
+            onChange={(e) => update({ after: e.target.value })}
+          />
+        </div>
+        <p className={hintClass}>
+          La <strong>palabra en color</strong> se pinta con el color de acento.
+          Vista previa:{" "}
+          <span className="font-display font-semibold text-brand-black">
+            <AccentText text={value} />
+          </span>
+        </p>
+      </>
+    );
+  }
+
+  function renderField(field: SettingsField) {
+    const wide =
+      field.type === "textarea" ||
+      field.type === "image" ||
+      field.type === "image-list" ||
+      field.type === "accent";
+
+    return (
+      <div key={field.name} className={wide ? "md:col-span-2" : undefined}>
+        {field.type === "accent" ? (
+          renderAccent(field)
+        ) : field.type === "image-list" ? (
+          <>
+            <ImageListField
+              label={field.label}
+              value={Array.isArray(values[field.name]) ? (values[field.name] as string[]) : []}
+              onChange={(value) => setValue(field.name, value)}
+            />
+            {field.hint && <p className={hintClass}>{field.hint}</p>}
+          </>
+        ) : field.type === "image" ? (
+          <>
+            <ImageField
+              label={field.label}
+              value={asString(values[field.name])}
+              onChange={(value) => setValue(field.name, value)}
+              placeholder={field.placeholder}
+            />
+            {field.hint && <p className={hintClass}>{field.hint}</p>}
+          </>
+        ) : field.type === "color" ? (
+          <>
+            <label htmlFor={field.name} className={labelClass}>
+              {field.label}
+            </label>
+            <div className="flex items-center gap-3">
+              <input
+                id={field.name}
+                type="color"
+                className="h-11 w-14 shrink-0 cursor-pointer rounded-lg border-2 border-brand-grey-200 bg-white p-1"
+                value={asString(values[field.name]) || "#000000"}
+                onChange={(e) => setValue(field.name, e.target.value)}
+              />
+              <input
+                type="text"
+                className={inputClass}
+                placeholder={field.placeholder ?? "#000000"}
+                value={asString(values[field.name])}
+                onChange={(e) => setValue(field.name, e.target.value)}
+              />
+            </div>
+            {field.hint && <p className={hintClass}>{field.hint}</p>}
+          </>
+        ) : (
+          <>
+            <label htmlFor={field.name} className={labelClass}>
+              {field.label}
+            </label>
+            {field.type === "textarea" ? (
+              <textarea
+                id={field.name}
+                rows={3}
+                className={inputClass}
+                placeholder={field.placeholder}
+                value={asString(values[field.name])}
+                onChange={(e) => setValue(field.name, e.target.value)}
+              />
+            ) : (
+              <input
+                id={field.name}
+                type="text"
+                className={inputClass}
+                placeholder={field.placeholder}
+                value={asString(values[field.name])}
+                onChange={(e) => setValue(field.name, e.target.value)}
+              />
+            )}
+            {field.hint && <p className={hintClass}>{field.hint}</p>}
+          </>
+        )}
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border-2 border-brand-grey-200 rounded-lg p-6 space-y-6"
+      className="bg-white border-2 border-brand-grey-200 rounded-lg p-6"
     >
       {title && (
-        <h2 className="font-display font-semibold text-lg text-brand-black uppercase">
+        <h2 className="mb-4 font-display font-semibold text-lg text-brand-black uppercase">
           {title}
         </h2>
       )}
 
       {toast && (
         <div
-          className={`rounded-lg px-4 py-3 text-sm font-medium text-white ${
+          className={`mb-4 rounded-lg px-4 py-3 text-sm font-medium text-white ${
             toast.type === "error" ? "bg-brand-red-500" : "bg-green-600"
           }`}
           role="alert"
@@ -106,156 +270,74 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
         </div>
       )}
 
-      {groups.map((group, index) => (
-        <div
-          key={group.title || index}
-          className={index > 0 ? "border-t-2 border-brand-grey-100 pt-6" : undefined}
-        >
-          {group.title && (
+      {showTabs && (
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2 border-b-2 border-brand-grey-100 pb-3">
+            {groups.map((group, index) => (
+              <button
+                key={group.title || index}
+                type="button"
+                onClick={() => setActiveTab(index)}
+                className={`rounded-full px-3.5 py-2 text-xs font-display font-semibold uppercase tracking-wide transition-colors ${
+                  index === safeTab
+                    ? "bg-brand-red-500 text-white"
+                    : "bg-brand-grey-100 text-brand-grey-600 hover:bg-brand-grey-200"
+                }`}
+              >
+                {group.title}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-brand-grey-500">
+            Navegá entre las pestañas y editá solo lo que necesites. Todos los
+            cambios se guardan juntos con el botón <strong>Guardar cambios</strong>.
+          </p>
+        </div>
+      )}
+
+      {visibleGroups.map((group, index) => (
+        <div key={group.title || index}>
+          {group.title && !showTabs && (
             <div className="mb-4">
               <h3 className="font-display text-sm font-bold uppercase tracking-wide text-brand-black">
                 {group.title}
               </h3>
-              {group.description && (
-                <p className="mt-1 text-xs leading-relaxed text-brand-grey-600">
-                  {group.description}
-                </p>
-              )}
             </div>
           )}
+          {showTabs && group.description && (
+            <p className="mb-4 text-sm leading-relaxed text-brand-grey-600">
+              {group.description}
+            </p>
+          )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {group.fields.map((field) => (
-              <div
-                key={field.name}
-                className={
-                  field.type === "textarea" ||
-                  field.type === "image" ||
-                  field.type === "image-list"
-                    ? "md:col-span-2"
-                    : undefined
-                }
-              >
-                {field.type === "image-list" ? (
-                  <>
-                    <ImageListField
-                      label={field.label}
-                      value={
-                        Array.isArray(values[field.name])
-                          ? (values[field.name] as string[])
-                          : []
-                      }
-                      onChange={(value) => setValue(field.name, value)}
-                    />
-                    {field.hint && <p className={hintClass}>{field.hint}</p>}
-                  </>
-                ) : field.type === "image" ? (
-                  <>
-                    <ImageField
-                      label={field.label}
-                      value={
-                        typeof values[field.name] === "string"
-                          ? (values[field.name] as string)
-                          : ""
-                      }
-                      onChange={(value) => setValue(field.name, value)}
-                      placeholder={field.placeholder}
-                    />
-                    {field.hint && <p className={hintClass}>{field.hint}</p>}
-                  </>
-                ) : field.type === "color" ? (
-                  <>
-                    <label htmlFor={field.name} className={labelClass}>
-                      {field.label}
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <input
-                        id={field.name}
-                        type="color"
-                        className="h-11 w-14 shrink-0 cursor-pointer rounded-lg border-2 border-brand-grey-200 bg-white p-1"
-                        value={
-                          typeof values[field.name] === "string" &&
-                          values[field.name]
-                            ? (values[field.name] as string)
-                            : "#000000"
-                        }
-                        onChange={(e) => setValue(field.name, e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        className={inputClass}
-                        placeholder={field.placeholder ?? "#000000"}
-                        value={
-                          typeof values[field.name] === "string"
-                            ? (values[field.name] as string)
-                            : ""
-                        }
-                        onChange={(e) => setValue(field.name, e.target.value)}
-                      />
-                    </div>
-                    {field.hint && <p className={hintClass}>{field.hint}</p>}
-                  </>
-                ) : (
-                  <>
-                    <label htmlFor={field.name} className={labelClass}>
-                      {field.label}
-                    </label>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        id={field.name}
-                        rows={3}
-                        className={inputClass}
-                        placeholder={field.placeholder}
-                        value={
-                          typeof values[field.name] === "string"
-                            ? (values[field.name] as string)
-                            : ""
-                        }
-                        onChange={(e) => setValue(field.name, e.target.value)}
-                      />
-                    ) : (
-                      <input
-                        id={field.name}
-                        type="text"
-                        className={inputClass}
-                        placeholder={field.placeholder}
-                        value={
-                          typeof values[field.name] === "string"
-                            ? (values[field.name] as string)
-                            : ""
-                        }
-                        onChange={(e) => setValue(field.name, e.target.value)}
-                      />
-                    )}
-                    {field.hint && <p className={hintClass}>{field.hint}</p>}
-                  </>
-                )}
-              </div>
-            ))}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {group.fields.map((field) => renderField(field))}
           </div>
         </div>
       ))}
 
       {error && (
-        <p className="text-brand-red-500 text-sm font-medium" role="alert">
+        <p className="mt-4 text-sm font-medium text-brand-red-500" role="alert">
           {error}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="bg-brand-black hover:bg-brand-dark text-white font-display font-semibold px-6 py-3 rounded-lg text-sm transition-colors uppercase disabled:opacity-60"
-      >
-        {saving ? (
-          <span className="inline-flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Guardando...
-          </span>
-        ) : (
-          "Guardar cambios"
-        )}
-      </button>
+      <div className="sticky bottom-0 z-10 -mx-6 mt-6 border-t-2 border-brand-grey-100 bg-white px-6 pt-4 pb-2">
+        <button
+          type="submit"
+          disabled={saving}
+          className="w-full bg-brand-black hover:bg-brand-dark text-white font-display font-semibold px-6 py-3 rounded-lg text-sm transition-colors uppercase disabled:opacity-60 sm:w-auto"
+        >
+          {saving ? (
+            <span className="inline-flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Guardando...
+            </span>
+          ) : (
+            "Guardar cambios"
+          )}
+        </button>
+      </div>
     </form>
   );
 }

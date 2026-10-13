@@ -1,26 +1,17 @@
-import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
+import { AccentText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 
 interface CTAProps {
-  title?: ReactNode;
-  subtitle?: string;
-  buttonText?: string;
-  buttonLink?: string;
+  content: Record<string, string>;
+  whatsapp?: string;
 }
 
-export function CTA({
-  title = (
-    <>
-      ¿Listo para tu <span className="text-brand-red-500">próximo proyecto</span>?
-    </>
-  ),
-  subtitle = "Hablemos. Cotizá sin compromiso y empezá a convertir tu idea en realidad.",
-  buttonText = "Contactar por WhatsApp",
-  buttonLink = `https://wa.me/${CONTACT_PLACEHOLDERS.whatsapp.replace(/\D/g, "")}`,
-}: CTAProps) {
+export function CTA({ content, whatsapp = CONTACT_PLACEHOLDERS.whatsapp }: CTAProps) {
+  const buttonText = content.ctaButtonText;
+  const buttonLink = `https://wa.me/${whatsapp.replace(/\D/g, "")}`;
   return (
     <section id="cta" className="relative overflow-hidden bg-zinc-950 py-20 md:py-28">
       <div
@@ -37,12 +28,12 @@ export function CTA({
           <div className="relative mx-auto max-w-2xl text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-300 backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-red-500" />
-            Empezá hoy
+            {content.ctaBadge}
           </span>
           <h2 className="font-display text-3xl font-bold uppercase leading-[1.05] tracking-tight text-white md:text-4xl lg:text-5xl">
-            {title}
+            <AccentText text={content.ctaTitle} />
           </h2>
-          <p className="mt-4 text-base text-zinc-400 md:text-lg">{subtitle}</p>
+          <p className="mt-4 text-base text-zinc-400 md:text-lg">{content.ctaSubtitle}</p>
 
           <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
             <a
@@ -58,7 +49,7 @@ export function CTA({
               href="/contacto"
               className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/40 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
             >
-              Ver servicios
+              {content.ctaSecondary}
             </a>
           </div>
           </div>

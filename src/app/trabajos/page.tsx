@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Portfolio } from "@/components/home/Portfolio";
-import { getPortfolioItems } from "@/lib/data";
+import { getPortfolioItems, getSiteSettings } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -10,19 +11,21 @@ export const metadata: Metadata = {
 };
 
 export default async function TrabajosPage() {
-  const portfolioItems = await getPortfolioItems();
+  const [portfolioItems, settings] = await Promise.all([
+    getPortfolioItems(),
+    getSiteSettings(),
+  ]);
+  const content = getContent(settings.content);
 
   return (
     <main className="bg-white">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
-        <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-brand-black uppercase">
-          Nuestros Trabajos
+        <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-heading uppercase">
+          {content.pageTrabajosTitle}
         </h1>
-        <p className="text-brand-dark text-lg max-w-2xl">
-          Algunos de nuestros trabajos más recientes.
-        </p>
+        <p className="text-body text-lg max-w-2xl">{content.pageTrabajosSubtitle}</p>
       </div>
-      <Portfolio items={portfolioItems} showHeading={false} />
+      <Portfolio items={portfolioItems} content={content} showHeading={false} />
     </main>
   );
 }

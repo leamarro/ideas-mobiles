@@ -25,6 +25,10 @@
   --color-brand-grey-900: #1a1a1a;
   --color-brand-grey-950: #0a0a0a;
 
+  --color-heading: #09090b;
+  --color-body: #18181b;
+  --color-background: #ffffff;
+
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px -4px rgb(0 0 0 / 0.08);
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.05), 0 12px 32px -12px rgb(0 0 0 / 0.12);
   --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.06), 0 24px 48px -16px rgb(0 0 0 / 0.18);
@@ -37,8 +41,8 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: #18181b;
+  background: var(--color-background);
+  color: var(--color-body);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

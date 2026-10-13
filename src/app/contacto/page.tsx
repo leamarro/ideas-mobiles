@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Contacto } from "@/components/home/Contacto";
 import { getSiteSettings } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -11,18 +12,18 @@ export const metadata: Metadata = {
 
 export default async function ContactoPage() {
   const settings = await getSiteSettings();
+  const content = getContent(settings.content);
 
   return (
     <main className="bg-white">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
-        <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-brand-black uppercase">
-          Contacto
+        <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-heading uppercase">
+          {content.pageContactoTitle}
         </h1>
-        <p className="text-brand-dark text-lg max-w-2xl">
-          Contanos tu proyecto y te respondemos a la brevedad.
-        </p>
+        <p className="text-body text-lg max-w-2xl">{content.pageContactoSubtitle}</p>
       </div>
       <Contacto
+        content={content}
         whatsapp={settings.whatsapp}
         phone={settings.phone}
         email={settings.email}

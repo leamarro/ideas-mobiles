@@ -48,5 +48,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   heroButtonText: "Cotizar ahora",
   heroButtonLink: "/contacto",
   heroImages: ["/images/imagen-fondo2.png"],
+  content: "{}",
+  theme: "{}",
   updatedAt: now,
 };

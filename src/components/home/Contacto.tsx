@@ -5,6 +5,7 @@ import { MessageCircle, Phone, Mail, Instagram, Facebook, MapPin, ChevronRight, 
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AccentText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
 
@@ -19,6 +20,7 @@ interface FormData {
 }
 
 interface ContactoProps {
+  content: Record<string, string>;
   whatsapp?: string;
   phone?: string;
   email?: string;
@@ -34,6 +36,7 @@ const inputClassName =
 const labelClassName = "mb-2 block text-sm font-medium text-zinc-700";
 
 export function Contacto({
+  content,
   whatsapp = CONTACT_PLACEHOLDERS.whatsapp,
   phone = CONTACT_PLACEHOLDERS.phone,
   email = CONTACT_PLACEHOLDERS.email,
@@ -126,15 +129,15 @@ export function Contacto({
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 shadow-lg">
               <Check className="h-8 w-8 text-white" />
             </div>
-            <h2 className="font-display text-3xl font-bold uppercase text-zinc-950">¡Gracias!</h2>
-            <p className="mt-4 text-zinc-500">
-              Tu mensaje fue enviado. Nos contactaremos a la brevedad.
-            </p>
+            <h2 className="font-display text-3xl font-bold uppercase text-heading">
+              {content.formSuccessTitle}
+            </h2>
+            <p className="mt-4 text-zinc-500">{content.formSuccessText}</p>
             <button
               onClick={() => setSubmitted(false)}
               className="mt-6 text-sm font-semibold text-brand-red-500 underline underline-offset-4 transition-colors hover:text-brand-red-600"
             >
-              Enviar otro mensaje
+              {content.formSuccessLink}
             </button>
           </div>
         </Container>
@@ -194,13 +197,9 @@ export function Contacto({
       <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
-            eyebrow="Hablemos"
-            title={
-              <>
-                Nuestro <span className="text-brand-red-500">Contacto</span>
-              </>
-            }
-            subtitle="Hacé tu consulta y nos ponemos en contacto"
+            eyebrow={content.contactoEyebrow}
+            title={<AccentText text={content.contactoTitle} />}
+            subtitle={content.contactoSubtitle}
           />
         )}
 
@@ -208,7 +207,7 @@ export function Contacto({
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             <h3 className="mb-5 font-display text-sm font-semibold uppercase tracking-wider text-zinc-900">
-              Contactanos
+              {content.contactoMethodsHeading}
             </h3>
             <div className="space-y-3">
               {methods.map((method) => {
@@ -276,7 +275,7 @@ export function Contacto({
               </div>
               <div>
                 <label htmlFor="nombre" className={labelClassName}>
-                  Nombre
+                  {content.formName}
                 </label>
                 <input
                   type="text"
@@ -286,12 +285,12 @@ export function Contacto({
                   onChange={handleChange}
                   required
                   className={inputClassName}
-                  placeholder="Tu nombre"
+                  placeholder={content.formNamePlaceholder}
                 />
               </div>
               <div>
                 <label htmlFor="empresa" className={labelClassName}>
-                  Empresa (opcional)
+                  {content.formEmpresa}
                 </label>
                 <input
                   type="text"
@@ -301,12 +300,12 @@ export function Contacto({
                   onChange={handleChange}
                   maxLength={120}
                   className={inputClassName}
-                  placeholder="Nombre de tu empresa"
+                  placeholder={content.formEmpresaPlaceholder}
                 />
               </div>
               <div>
                 <label htmlFor="whatsapp" className={labelClassName}>
-                  WhatsApp
+                  {content.formWhatsapp}
                 </label>
                 <input
                   type="tel"
@@ -316,12 +315,12 @@ export function Contacto({
                   onChange={handleChange}
                   required
                   className={inputClassName}
-                  placeholder="+54 291 454 3333"
+                  placeholder={content.formWhatsappPlaceholder}
                 />
               </div>
               <div>
                 <label htmlFor="servicio" className={labelClassName}>
-                  Servicio
+                  {content.formServicio}
                 </label>
                 <select
                   id="servicio"
@@ -330,7 +329,7 @@ export function Contacto({
                   onChange={handleChange}
                   className={inputClassName}
                 >
-                  <option value="">Seleccioná un servicio</option>
+                  <option value="">{content.formServicioPlaceholder}</option>
                   <option value="carteleria">Cartelería Comercial</option>
                   <option value="corpóreas">Carteles y Letras Corpóreas</option>
                   <option value="vinilos">Ploteados en Vinilos</option>
@@ -342,7 +341,7 @@ export function Contacto({
               </div>
               <div>
                 <label htmlFor="mensaje" className={labelClassName}>
-                  Mensaje
+                  {content.formMensaje}
                 </label>
                 <textarea
                   id="mensaje"
@@ -352,12 +351,12 @@ export function Contacto({
                   required
                   rows={4}
                   className={inputClassName + " resize-none"}
-                  placeholder="Contanos tu proyecto..."
+                  placeholder={content.formMensajePlaceholder}
                 />
               </div>
               <div>
                 <label htmlFor="imagen" className={labelClassName}>
-                  Adjuntar imagen (opcional)
+                  {content.formImage}
                 </label>
                 <input
                   type="file"
@@ -367,9 +366,7 @@ export function Contacto({
                   onChange={handleImageChange}
                   className="w-full cursor-pointer text-sm text-zinc-600 file:mr-4 file:cursor-pointer file:rounded-xl file:border-0 file:bg-zinc-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-700 hover:file:bg-zinc-200"
                 />
-                <p className="mt-1 text-xs text-zinc-500">
-                  Máx. 5MB — JPG, PNG, WebP o GIF
-                </p>
+                <p className="mt-1 text-xs text-zinc-500">{content.formImageHint}</p>
               </div>
               {formError && (
                 <div
@@ -386,7 +383,7 @@ export function Contacto({
                 className="w-full"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+                {isSubmitting ? content.formSubmitting : content.formSubmit}
               </Button>
             </form>
           </div>

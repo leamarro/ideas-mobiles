@@ -13,57 +13,7 @@ export const metadata: Metadata = {
 
 const sections: SettingsSection[] = [
   {
-    title: "Colores",
-    description:
-      "Colores globales del sitio. Se aplican a botones, enlaces, títulos y fondo.",
-    fields: THEME_FIELDS.map((field) => ({
-      name: field.key,
-      label: field.label,
-      type: "color" as const,
-      hint: field.hint,
-    })),
-  },
-  {
-    title: "Identidad visual",
-    description:
-      "Imágenes de la marca. Si dejás un campo vacío se mantiene la imagen por defecto del sitio.",
-    fields: [
-      {
-        name: "logo",
-        label: "Logo",
-        type: "image",
-        placeholder: "/images/logo.png",
-        hint: "Logo completo. Se muestra en el pie de página y en la sección Nosotros. Recomendado en formato horizontal.",
-      },
-      {
-        name: "favicon",
-        label: "Ícono del navegador (favicon)",
-        type: "image",
-        placeholder: "/images/logo.png",
-        hint: "Imagen cuadrada que aparece en la pestaña del navegador y al guardar el sitio como favorito.",
-      },
-    ],
-  },
-  {
-    title: "Apariencia en buscadores (SEO)",
-    description:
-      "Es lo que ven los buscadores y las redes cuando comparten el link: título y descripción.",
-    fields: [
-      {
-        name: "title",
-        label: "Título del sitio",
-        hint: "Aparece en la pestaña del navegador y en los resultados de Google. Ej.: Ideas Móviles",
-      },
-      {
-        name: "description",
-        label: "Descripción SEO",
-        type: "textarea",
-        hint: "Frase de 1 o 2 líneas que se muestra debajo del título en Google y al compartir el link en WhatsApp o Instagram.",
-      },
-    ],
-  },
-  {
-    title: "Portada (Hero)",
+    title: "Portada",
     description: "Imagen y textos de la primera pantalla de la página de inicio.",
     fields: [
       {
@@ -102,6 +52,17 @@ const sections: SettingsSection[] = [
       },
     ],
   },
+  {
+    title: "Colores",
+    description:
+      "Colores globales del sitio. Se aplican a botones, enlaces, títulos y fondo.",
+    fields: THEME_FIELDS.map((field) => ({
+      name: field.key,
+      label: field.label,
+      type: "color" as const,
+      hint: field.hint,
+    })),
+  },
   ...CONTENT_GROUPS.map((group) => ({
     title: group.title,
     description: group.description,
@@ -113,6 +74,52 @@ const sections: SettingsSection[] = [
       hint: field.hint,
     })),
   })),
+  {
+    title: "Logo y favicon",
+    description:
+      "Imágenes de la marca. Si dejás un campo vacío se mantiene la imagen por defecto del sitio.",
+    fields: [
+      {
+        name: "logo",
+        label: "Logo",
+        type: "image",
+        placeholder: "/images/logo.png",
+        hint: "Logo completo. Se muestra en el pie de página y en la sección Nosotros. Recomendado en formato horizontal.",
+      },
+      {
+        name: "favicon",
+        label: "Ícono del navegador (favicon)",
+        type: "image",
+        placeholder: "/images/logo.png",
+        hint: "Imagen cuadrada que aparece en la pestaña del navegador y al guardar el sitio como favorito.",
+      },
+    ],
+  },
+  {
+    title: "Buscadores y redes",
+    description:
+      "Lo que ven los buscadores y las redes cuando comparten el link del sitio.",
+    fields: [
+      {
+        name: "title",
+        label: "Título del sitio",
+        hint: "Aparece en la pestaña del navegador y en los resultados de Google. Ej.: Ideas Móviles",
+      },
+      {
+        name: "description",
+        label: "Descripción SEO",
+        type: "textarea",
+        hint: "Frase de 1 o 2 líneas que se muestra debajo del título en Google y al compartir el link en WhatsApp o Instagram.",
+      },
+      {
+        name: "ogImage",
+        label: "Imagen para compartir",
+        type: "image",
+        placeholder: "/images/og.png",
+        hint: "Imagen que se ve al compartir el sitio en WhatsApp, Facebook o Twitter. Recomendado 1200x630. Si está vacía se usa el logo.",
+      },
+    ],
+  },
 ];
 
 export default async function AdminConfigPage() {
@@ -142,8 +149,8 @@ export default async function AdminConfigPage() {
       <SettingsForm initial={initial} sections={sections} />
       <p className="text-brand-dark text-xs mt-4">
         Los datos de contacto (WhatsApp, teléfono, email y redes sociales) se configuran en la
-        sección <strong>Datos de contacto</strong>. En los textos podés usar llaves para pintar
-        una palabra con el color de acento, por ejemplo <code>{"Nuestros {Servicios}"}</code>.
+        sección <strong>Datos de contacto</strong>. En los títulos con dos o tres casillas, la{" "}
+        <strong>palabra en color</strong> se pinta automáticamente con el color de acento.
       </p>
     </div>
   );

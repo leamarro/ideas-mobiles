@@ -13,6 +13,7 @@ interface HeroProps {
   text?: string;
   buttonText?: string;
   buttonLink?: string;
+  secondaryButton?: string;
   images?: string[] | null;
 }
 
@@ -21,6 +22,7 @@ export function Hero({
   text = "Diseño y producción de cartelería, señalética, vinilos y gráfica publicitaria. Convertimos tu idea en impacto visual.",
   buttonText = "Cotizar ahora",
   buttonLink = "/contacto",
+  secondaryButton = "Ver trabajos",
   images,
 }: HeroProps) {
   const slides = (images ?? []).map((src) => src.trim()).filter(Boolean);
@@ -137,7 +139,7 @@ export function Hero({
                 href="/trabajos"
                 className="inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
-                Ver trabajos
+                {secondaryButton}
               </a>
             </div>
           </div>
@@ -149,7 +151,7 @@ export function Hero({
                 className="animate-slide-up inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
                 style={{ animationDelay: "160ms" }}
               >
-                Ver trabajos
+                {secondaryButton}
               </a>
             </div>
             <div className="flex min-w-0 max-w-[520px] flex-col items-center gap-3 text-center">

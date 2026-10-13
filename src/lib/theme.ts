@@ -35,6 +35,12 @@ export const THEME_FIELDS: ThemeField[] = [
     hint: "Color base del texto del sitio.",
   },
   {
+    key: "taglineColor",
+    label: "Color de la frase del encabezado",
+    default: "#71717a",
+    hint: "Color del texto que aparece al lado del logo, en la barra superior.",
+  },
+  {
     key: "background",
     label: "Color de fondo",
     default: "#ffffff",
@@ -114,6 +120,7 @@ export function themeCssVariables(theme: Record<string, string>): Record<string,
   const heading = normalizeHex(theme.heading) ?? THEME_DEFAULTS.heading;
   const body = normalizeHex(theme.body) ?? THEME_DEFAULTS.body;
   const background = normalizeHex(theme.background) ?? THEME_DEFAULTS.background;
+  const tagline = normalizeHex(theme.taglineColor) ?? THEME_DEFAULTS.taglineColor;
 
   return {
     "--color-brand-red-50": mix(accent, "#ffffff", 0.92),
@@ -123,6 +130,7 @@ export function themeCssVariables(theme: Record<string, string>): Record<string,
     "--color-heading": heading,
     "--color-body": body,
     "--color-background": background,
+    "--color-tagline": tagline,
   };
 }
 

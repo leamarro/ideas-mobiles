@@ -1,16 +1,21 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AccentText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import { uploadImageProps } from "@/lib/upload-urls";
 
 interface NosotrosProps {
-  slogan?: string;
+  content: Record<string, string>;
   logo?: string;
   showHeading?: boolean;
 }
 
-export function Nosotros({ slogan, logo = "/images/logo.png", showHeading = true }: NosotrosProps) {
+export function Nosotros({
+  content,
+  logo = "/images/logo.png",
+  showHeading = true,
+}: NosotrosProps) {
   return (
     <section id="nosotros" className="bg-white py-20 md:py-28">
       <Container maxWidth="full">
@@ -18,23 +23,18 @@ export function Nosotros({ slogan, logo = "/images/logo.png", showHeading = true
           <div>
             {showHeading && (
               <SectionHeading
-                eyebrow="Nosotros"
+                eyebrow={content.nosotrosEyebrow}
                 align="left"
-                title={
-                  <>
-                    Quiénes <span className="text-brand-red-500">somos</span>
-                  </>
-                }
+                title={<AccentText text={content.nosotrosTitle} />}
               />
             )}
             <Reveal>
               <p className="mb-6 text-lg leading-relaxed text-zinc-600">
-                Somos un equipo apasionado por la comunicación visual y la cartelería.
-                Cada proyecto es una oportunidad para crear algo que impacte.
+                {content.nosotrosText}
               </p>
               <blockquote className="relative rounded-2xl border-l-4 border-brand-red-500 bg-zinc-50 px-7 py-6">
-                <p className="font-display text-xl font-medium leading-snug text-zinc-800 md:text-2xl">
-                  {slogan || '"Nuestra propuesta, es ayudarte a alcanzar tu objetivo…\nNuestro objetivo, es ayudarte a alcanzar el tuyo…!"'}
+                <p className="whitespace-pre-line font-display text-xl font-medium leading-snug text-zinc-800 md:text-2xl">
+                  {content.nosotrosSlogan}
                 </p>
               </blockquote>
             </Reveal>
@@ -68,7 +68,7 @@ export function Nosotros({ slogan, logo = "/images/logo.png", showHeading = true
                 </div>
               </div>
               <span className="absolute bottom-5 left-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                Imagen y Comunicación
+                {content.nosotrosBadge}
               </span>
             </div>
           </Reveal>

@@ -16,14 +16,20 @@ const footerLinks = {
   servicios: ["Cartelería", "Corpóreas", "Vinilos", "Vehicular", "Imprenta", "Señalética"],
 };
 
-export function Footer({ settings }: { settings?: SiteSettings }) {
+export function Footer({
+  settings,
+  content,
+}: {
+  settings?: SiteSettings;
+  content: Record<string, string>;
+}) {
   const whatsapp = settings?.whatsapp ?? CONTACT_PLACEHOLDERS.whatsapp;
   const email = settings?.email ?? CONTACT_PLACEHOLDERS.email;
   const instagram = settings?.instagram ?? CONTACT_PLACEHOLDERS.instagram;
   const facebook = settings?.facebook ?? CONTACT_PLACEHOLDERS.facebook;
   const logo = settings?.logo || "/images/logo.png";
-  const description =
-    settings?.description ?? "Cartelería y comunicación visual profesional. Cotizá tu proyecto.";
+  const description = content.footerDescription;
+  const copyright = content.footerCopyright.replace("{year}", String(new Date().getFullYear()));
 
   return (
     <footer className="relative bg-zinc-950">
@@ -99,7 +105,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              Navegación
+              {content.footerNavHeading}
             </h4>
             <nav className="space-y-3">
               {footerLinks.navegacion.map((link) => (
@@ -116,7 +122,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              Servicios
+              {content.footerServicesHeading}
             </h4>
             <nav className="space-y-3">
               {footerLinks.servicios.map((service) => (
@@ -133,7 +139,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              Contacto
+              {content.footerContactHeading}
             </h4>
             <div className="space-y-3">
               <a
@@ -175,12 +181,8 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
-          <p className="text-xs text-zinc-400">
-            © {new Date().getFullYear()} Ideas Móviles. Todos los derechos reservados.
-          </p>
-          <p className="text-xs text-zinc-400">
-            Imagen y Comunicación
-          </p>
+          <p className="text-xs text-zinc-400">{copyright}</p>
+          <p className="text-xs text-zinc-400">{content.footerTagline}</p>
         </div>
       </Container>
     </footer>

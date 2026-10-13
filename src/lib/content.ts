@@ -1,4 +1,4 @@
-export type FieldType = "text" | "textarea" | "image" | "color";
+export type FieldType = "text" | "textarea" | "image" | "color" | "accent";
 
 export interface ContentField {
   key: string;
@@ -21,10 +21,12 @@ export interface ContentGroup {
  * Para agregar un texto nuevo: agregá una entrada acá y consumila en el
  * componente correspondiente con `content[clave]`. No hace falta migración.
  *
- * En los textos podés marcar una parte con llaves para pintarla con el color
- * de acento. Ej.: "Nuestros {Servicios}" -> "Servicios" en color de acento.
+ * Los campos de tipo "accent" permiten resaltar una palabra con el color de
+ * acento. Se guardan como texto con la parte resaltada entre llaves
+ * (ej.: "Nuestros {Servicios}") y el panel lo muestra con campos separados.
  */
-export const CONTENT_GROUPS: ContentGroup[] = [  {
+export const CONTENT_GROUPS: ContentGroup[] = [
+  {
     title: "Encabezado (menú superior)",
     description: "Textos del menú de navegación y de la barra superior del sitio.",
     fields: [
@@ -47,12 +49,7 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
     title: "Sección Servicios",
     fields: [
       { key: "serviciosEyebrow", label: "Antetítulo", default: "Lo que hacemos" },
-      {
-        key: "serviciosTitle",
-        label: "Título",
-        default: "Nuestros {Servicios}",
-        hint: "Usá llaves para pintar una palabra con el color de acento.",
-      },
+      { key: "serviciosTitle", label: "Título", type: "accent", default: "Nuestros {Servicios}" },
       {
         key: "serviciosSubtitle",
         label: "Subtítulo",
@@ -74,7 +71,7 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
     title: "Sección Portfolio",
     fields: [
       { key: "portfolioEyebrow", label: "Antetítulo", default: "Portfolio" },
-      { key: "portfolioTitle", label: "Título", default: "Nuestro {Trabajo}" },
+      { key: "portfolioTitle", label: "Título", type: "accent", default: "Nuestro {Trabajo}" },
       {
         key: "portfolioSubtitle",
         label: "Subtítulo",
@@ -92,7 +89,7 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
     title: "Sección Nosotros",
     fields: [
       { key: "nosotrosEyebrow", label: "Antetítulo", default: "Nosotros" },
-      { key: "nosotrosTitle", label: "Título", default: "Quiénes {somos}" },
+      { key: "nosotrosTitle", label: "Título", type: "accent", default: "Quiénes {somos}" },
       {
         key: "nosotrosText",
         label: "Párrafo",
@@ -119,7 +116,7 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
     title: "Sección Proceso",
     fields: [
       { key: "procesoEyebrow", label: "Antetítulo", default: "Cómo trabajamos" },
-      { key: "procesoTitle", label: "Título", default: "Nuestro {Proceso}" },
+      { key: "procesoTitle", label: "Título", type: "accent", default: "Nuestro {Proceso}" },
       {
         key: "procesoSubtitle",
         label: "Subtítulo",
@@ -156,7 +153,12 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
     title: "Sección final (CTA)",
     fields: [
       { key: "ctaBadge", label: "Texto del distintivo", default: "Empezá hoy" },
-      { key: "ctaTitle", label: "Título", default: "¿Listo para tu {próximo proyecto}?" },
+      {
+        key: "ctaTitle",
+        label: "Título",
+        type: "accent",
+        default: "¿Listo para tu {próximo proyecto}?",
+      },
       {
         key: "ctaSubtitle",
         label: "Subtítulo",
@@ -169,9 +171,10 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
   },
   {
     title: "Sección Contacto",
+    description: "Títulos de la sección y textos del formulario de consulta.",
     fields: [
       { key: "contactoEyebrow", label: "Antetítulo", default: "Hablemos" },
-      { key: "contactoTitle", label: "Título", default: "Nuestro {Contacto}" },
+      { key: "contactoTitle", label: "Título", type: "accent", default: "Nuestro {Contacto}" },
       {
         key: "contactoSubtitle",
         label: "Subtítulo",
@@ -183,56 +186,54 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
         label: "Título de la columna de datos",
         default: "Contactanos",
       },
-    ],
-  },
-  {
-    title: "Formulario de contacto",
-    description: "Etiquetas y textos de ayuda del formulario de consulta.",
-    fields: [
-      { key: "formName", label: "Etiqueta: Nombre", default: "Nombre" },
-      { key: "formNamePlaceholder", label: "Ayuda: Nombre", default: "Tu nombre" },
-      { key: "formEmpresa", label: "Etiqueta: Empresa", default: "Empresa (opcional)" },
+      { key: "formName", label: "Formulario: Nombre", default: "Nombre" },
+      { key: "formNamePlaceholder", label: "Formulario: ayuda del nombre", default: "Tu nombre" },
+      { key: "formEmpresa", label: "Formulario: Empresa", default: "Empresa (opcional)" },
       {
         key: "formEmpresaPlaceholder",
-        label: "Ayuda: Empresa",
+        label: "Formulario: ayuda de empresa",
         default: "Nombre de tu empresa",
       },
-      { key: "formWhatsapp", label: "Etiqueta: WhatsApp", default: "WhatsApp" },
+      { key: "formWhatsapp", label: "Formulario: WhatsApp", default: "WhatsApp" },
       {
         key: "formWhatsappPlaceholder",
-        label: "Ayuda: WhatsApp",
+        label: "Formulario: ayuda de WhatsApp",
         default: "+54 291 454 3333",
       },
-      { key: "formServicio", label: "Etiqueta: Servicio", default: "Servicio" },
+      { key: "formServicio", label: "Formulario: Servicio", default: "Servicio" },
       {
         key: "formServicioPlaceholder",
-        label: "Ayuda: Servicio",
+        label: "Formulario: ayuda de servicio",
         default: "Seleccioná un servicio",
       },
-      { key: "formMensaje", label: "Etiqueta: Mensaje", default: "Mensaje" },
+      { key: "formMensaje", label: "Formulario: Mensaje", default: "Mensaje" },
       {
         key: "formMensajePlaceholder",
-        label: "Ayuda: Mensaje",
+        label: "Formulario: ayuda del mensaje",
         default: "Contanos tu proyecto...",
       },
-      { key: "formImage", label: "Etiqueta: Adjuntar imagen", default: "Adjuntar imagen (opcional)" },
+      {
+        key: "formImage",
+        label: "Formulario: Adjuntar imagen",
+        default: "Adjuntar imagen (opcional)",
+      },
       {
         key: "formImageHint",
-        label: "Ayuda: Adjuntar imagen",
+        label: "Formulario: ayuda de imagen",
         default: "Máx. 5MB — JPG, PNG, WebP o GIF",
       },
-      { key: "formSubmit", label: "Botón enviar", default: "Enviar mensaje" },
-      { key: "formSubmitting", label: "Botón enviando", default: "Enviando..." },
-      { key: "formSuccessTitle", label: "Título de agradecimiento", default: "¡Gracias!" },
+      { key: "formSubmit", label: "Formulario: botón enviar", default: "Enviar mensaje" },
+      { key: "formSubmitting", label: "Formulario: botón enviando", default: "Enviando..." },
+      { key: "formSuccessTitle", label: "Formulario: título de agradecimiento", default: "¡Gracias!" },
       {
         key: "formSuccessText",
-        label: "Texto de agradecimiento",
+        label: "Formulario: texto de agradecimiento",
         type: "textarea",
         default: "Tu mensaje fue enviado. Nos contactaremos a la brevedad.",
       },
       {
         key: "formSuccessLink",
-        label: "Enlace para enviar otro mensaje",
+        label: "Formulario: enlace para enviar otro mensaje",
         default: "Enviar otro mensaje",
       },
     ],
@@ -300,24 +301,12 @@ export const CONTENT_GROUPS: ContentGroup[] = [  {
       },
     ],
   },
-  {
-    title: "Redes al compartir el link (Open Graph)",
-    fields: [
-      {
-        key: "ogImage",
-        label: "Imagen de vista previa",
-        type: "image",
-        default: "",
-        placeholder: "/images/og.png",
-        hint: "Imagen que se muestra cuando se comparte el sitio en WhatsApp, Facebook o Twitter. Recomendado 1200x630. Si está vacía se usa el logo.",
-      },
-    ],
-  },
 ];
 
 /**
  * Campos que se muestran junto a otros existentes en el panel (por ejemplo el
- * botón secundario de la portada) y por eso no se listan como grupo propio.
+ * botón secundario de la portada o la imagen para redes) y por eso no se
+ * listan como grupo propio.
  */
 const EXTRA_CONTENT_FIELDS: ContentField[] = [
   {
@@ -325,6 +314,14 @@ const EXTRA_CONTENT_FIELDS: ContentField[] = [
     label: "Texto del botón secundario",
     default: "Ver trabajos",
     hint: "Botón claro que acompaña al botón principal de la portada.",
+  },
+  {
+    key: "ogImage",
+    label: "Imagen para redes (link compartido)",
+    type: "image",
+    default: "",
+    placeholder: "/images/og.png",
+    hint: "Imagen que se muestra cuando se comparte el sitio en WhatsApp, Facebook o Twitter. Recomendado 1200x630. Si está vacía se usa el logo.",
   },
 ];
 

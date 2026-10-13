@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { getContent, pickContentValues } from "@/lib/content";
+import { getTheme, pickThemeValues } from "@/lib/theme";
 
-const EDITABLE_FIELDS = [
+const NAMED_FIELDS = [
   "logo",
   "favicon",
   "title",
@@ -43,8 +45,11 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Cuerpo inválido" }, { status: 400 });
   }
 
+  const existing = await prisma.siteSettings.findFirst({ where: { id: "default" } });
+
   const data: Record<string, string | null> = {};
-  for (const field of EDITABLE_FIELDS) {
+
+  for (const field of NAMED_FIELDS) {
     if (field === "heroImages") {
       if (Array.isArray(body[field])) {
         const list = body[field]
@@ -60,11 +65,21 @@ export async function PATCH(request: Request) {
     }
   }
 
+  const contentValues = pickContentValues(body);
+  if (Object.keys(contentValues).length > 0) {
+    const merged = { ...getContent(existing?.content), ...contentValues };
+    data.content = JSON.stringify(merged);
+  }
+
+  const themeValues = pickThemeValues(body);
+  if (Object.keys(themeValues).length > 0) {
+    const merged = { ...getTheme(existing?.theme), ...themeValues };
+    data.theme = JSON.stringify(merged);
+  }
+
   if (Object.keys(data).length === 0) {
     return NextResponse.json({ error: "No hay campos para actualizar" }, { status: 400 });
   }
-
-  const existing = await prisma.siteSettings.findFirst({ where: { id: "default" } });
 
   const settings = existing
     ? await prisma.siteSettings.update({ where: { id: existing.id }, data })
@@ -86,6 +101,8 @@ export async function PATCH(request: Request) {
           heroButtonLink: "",
           heroImage: "/images/imagen-fondo2.png",
           heroImages: '["/images/imagen-fondo2.png"]',
+          content: "{}",
+          theme: "{}",
           ...data,
         },
       });

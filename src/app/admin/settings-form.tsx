@@ -10,7 +10,7 @@ import { ImageListField } from "./image-list-field";
 export interface SettingsField {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "image" | "image-list";
+  type?: "text" | "textarea" | "image" | "image-list" | "color";
   placeholder?: string;
   hint?: string;
 }
@@ -161,6 +161,38 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
                       onChange={(value) => setValue(field.name, value)}
                       placeholder={field.placeholder}
                     />
+                    {field.hint && <p className={hintClass}>{field.hint}</p>}
+                  </>
+                ) : field.type === "color" ? (
+                  <>
+                    <label htmlFor={field.name} className={labelClass}>
+                      {field.label}
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        id={field.name}
+                        type="color"
+                        className="h-11 w-14 shrink-0 cursor-pointer rounded-lg border-2 border-brand-grey-200 bg-white p-1"
+                        value={
+                          typeof values[field.name] === "string" &&
+                          values[field.name]
+                            ? (values[field.name] as string)
+                            : "#000000"
+                        }
+                        onChange={(e) => setValue(field.name, e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        className={inputClass}
+                        placeholder={field.placeholder ?? "#000000"}
+                        value={
+                          typeof values[field.name] === "string"
+                            ? (values[field.name] as string)
+                            : ""
+                        }
+                        onChange={(e) => setValue(field.name, e.target.value)}
+                      />
+                    </div>
                     {field.hint && <p className={hintClass}>{field.hint}</p>}
                   </>
                 ) : (

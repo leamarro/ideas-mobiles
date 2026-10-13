@@ -5,6 +5,7 @@ import { PortfolioItem } from "@/components/portfolio/PortfolioItem";
 import { Lightbox } from "@/components/portfolio/Lightbox";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AccentText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import {
   PORTFOLIO_CATEGORIES,
@@ -16,10 +17,15 @@ import { cn } from "@/lib/utils";
 
 interface PortfolioProps {
   items?: PortfolioItemData[];
+  content: Record<string, string>;
   showHeading?: boolean;
 }
 
-export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: PortfolioProps) {
+export function Portfolio({
+  items = FALLBACK_PORTFOLIO,
+  content,
+  showHeading = true,
+}: PortfolioProps) {
   const [selectedCategory, setSelectedCategory] = useState("todos");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
@@ -43,13 +49,9 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
       <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
-            eyebrow="Portfolio"
-            title={
-              <>
-                Nuestro <span className="text-brand-red-500">Trabajo</span>
-              </>
-            }
-            subtitle="Algunos de nuestros trabajos más recientes"
+            eyebrow={content.portfolioEyebrow}
+            title={<AccentText text={content.portfolioTitle} />}
+            subtitle={content.portfolioSubtitle}
           />
         )}
 
@@ -72,7 +74,7 @@ export function Portfolio({ items = FALLBACK_PORTFOLIO, showHeading = true }: Po
 
         {filteredItems.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-zinc-500">No hay trabajos en esta categoría.</p>
+            <p className="text-zinc-500">{content.portfolioEmpty}</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">

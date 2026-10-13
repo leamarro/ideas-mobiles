@@ -9,6 +9,7 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { getPortfolioItems, getServices, getSiteSettings } from "@/lib/data";
+import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -19,23 +20,27 @@ export default async function Home() {
     getSiteSettings(),
   ]);
 
+  const content = getContent(settings.content);
+
   return (
     <>
-      <Header />
+      <Header content={content} />
       <main>
         <Hero
           subtitle={settings.heroSubtitle}
           text={settings.heroText}
           buttonText={settings.heroButtonText}
           buttonLink={settings.heroButtonLink}
+          secondaryButton={content.heroSecondary}
           images={settings.heroImages}
         />
-        <Servicios services={services} />
-        <Portfolio items={portfolioItems} />
-        <Nosotros logo={settings.logo || "/images/logo.png"} />
-        <Proceso />
-        <CTA />
+        <Servicios services={services} content={content} />
+        <Portfolio items={portfolioItems} content={content} />
+        <Nosotros content={content} logo={settings.logo || "/images/logo.png"} />
+        <Proceso content={content} />
+        <CTA content={content} whatsapp={settings.whatsapp} />
         <Contacto
+          content={content}
           whatsapp={settings.whatsapp}
           phone={settings.phone}
           email={settings.email}
@@ -44,7 +49,7 @@ export default async function Home() {
           address={settings.address}
         />
       </main>
-      <Footer settings={settings} />
+      <Footer settings={settings} content={content} />
       <WhatsAppButton whatsapp={settings.whatsapp} />
     </>
   );

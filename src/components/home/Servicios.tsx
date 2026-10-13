@@ -5,10 +5,12 @@ import { Service } from "@/types/service";
 import { uploadImageProps } from "@/lib/upload-urls";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AccentText } from "@/components/ui/AccentText";
 import { Container } from "@/components/ui/Section";
 
 interface ServiciosProps {
   services: Service[];
+  content: Record<string, string>;
   showHeading?: boolean;
 }
 
@@ -21,7 +23,7 @@ const categoryLabels: Record<string, string> = {
   "senalizacion": "Señalética",
 };
 
-export function Servicios({ services, showHeading = true }: ServiciosProps) {
+export function Servicios({ services, content, showHeading = true }: ServiciosProps) {
   const publishedServices = services.filter((s) => s.published);
 
   if (publishedServices.length === 0) {
@@ -29,11 +31,12 @@ export function Servicios({ services, showHeading = true }: ServiciosProps) {
       <section id="servicios" className="bg-white py-20 md:py-28">
         <Container maxWidth="full">
           {showHeading && (
-            <SectionHeading eyebrow="Lo que hacemos" title="Nuestros Servicios" />
+            <SectionHeading
+              eyebrow={content.serviciosEyebrow}
+              title={<AccentText text={content.serviciosTitle} />}
+            />
           )}
-          <p className="mx-auto max-w-xl text-center text-zinc-500">
-            Estamos preparando esta sección. Mientras tanto, contactanos y te contamos todo lo que hacemos.
-          </p>
+          <p className="mx-auto max-w-xl text-center text-zinc-500">{content.serviciosEmpty}</p>
         </Container>
       </section>
     );
@@ -44,13 +47,9 @@ export function Servicios({ services, showHeading = true }: ServiciosProps) {
       <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
-            eyebrow="Lo que hacemos"
-            title={
-              <>
-                Nuestros <span className="text-brand-red-500">Servicios</span>
-              </>
-            }
-            subtitle="Soluciones integrales de cartelería y comunicación visual para tu negocio"
+            eyebrow={content.serviciosEyebrow}
+            title={<AccentText text={content.serviciosTitle} />}
+            subtitle={content.serviciosSubtitle}
           />
         )}
 
@@ -76,14 +75,14 @@ export function Servicios({ services, showHeading = true }: ServiciosProps) {
                     </div>
                   )}
                   <div className="flex flex-1 flex-col p-6">
-                    <h3 className="font-display text-xl font-semibold uppercase leading-tight text-zinc-950 transition-colors duration-200 group-hover:text-brand-red-500">
+                    <h3 className="font-display text-xl font-semibold uppercase leading-tight text-heading transition-colors duration-200 group-hover:text-brand-red-500">
                       {service.title}
                     </h3>
                     <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-zinc-500">
                       {service.description}
                     </p>
                     <div className="mt-6 flex items-center justify-between">
-                      <span className="text-sm font-semibold text-zinc-900">Ver más</span>
+                      <span className="text-sm font-semibold text-zinc-900">{content.serviciosCta}</span>
                       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-700 transition-all duration-200 group-hover:border-brand-red-500 group-hover:bg-brand-red-500 group-hover:text-white">
                         <ArrowUpRight className="h-4 w-4" />
                       </span>

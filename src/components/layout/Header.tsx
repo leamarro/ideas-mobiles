@@ -12,15 +12,15 @@ interface NavLink {
   href: string;
 }
 
-const navLinks: NavLink[] = [
-  { label: "INICIO", href: "/" },
-  { label: "PORTFOLIO", href: "/trabajos" },
-  { label: "NOSOTROS", href: "/nosotros" },
-  { label: "SERVICIOS", href: "/servicios" },
-  { label: "CONTACTO", href: "/contacto" },
-];
+export function Header({ content }: { content: Record<string, string> }) {
+  const navLinks: NavLink[] = [
+    { label: content.navInicio, href: "/" },
+    { label: content.navPortfolio, href: "/trabajos" },
+    { label: content.navNosotros, href: "/nosotros" },
+    { label: content.navServicios, href: "/servicios" },
+    { label: content.navContacto, href: "/contacto" },
+  ];
 
-export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -70,7 +70,7 @@ export function Header() {
           </Link>
 
           <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-zinc-500 xl:block">
-            Cartelería integral para empresas, comercios y particulares.
+            {content.headerTagline}
           </span>
 
           <nav className="hidden items-center gap-6 xl:gap-7 md:flex">
@@ -96,7 +96,7 @@ export function Header() {
               href="/contacto"
               className="rounded-full bg-brand-red-500 px-5 py-2.5 text-[13px] font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2"
             >
-              Cotizar
+              {content.headerCta}
             </Link>
           </nav>
 
@@ -135,7 +135,7 @@ export function Header() {
               onClick={() => setMenuOpen(false)}
               className="mt-3 block rounded-xl bg-brand-red-500 px-4 py-3.5 text-center text-sm font-semibold text-white shadow-glow-red transition-colors hover:bg-brand-red-600"
             >
-              Cotizar ahora
+              {content.headerCtaMobile}
             </Link>
           </div>
         </nav>

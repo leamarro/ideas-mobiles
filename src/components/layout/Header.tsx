@@ -69,7 +69,7 @@ export function Header({ content }: { content: Record<string, string> }) {
             />
           </Link>
 
-          <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-zinc-500 xl:block">
+          <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-[color:var(--color-tagline)] xl:block">
             {content.headerTagline}
           </span>
 

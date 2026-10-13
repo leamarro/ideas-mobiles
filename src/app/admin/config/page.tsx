@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import { getSiteSettings } from "@/lib/data";
+import { getContent, CONTENT_GROUPS } from "@/lib/content";
+import { getTheme, THEME_FIELDS } from "@/lib/theme";
 import { SettingsForm, type SettingsSection } from "../settings-form";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +12,17 @@ export const metadata: Metadata = {
 };
 
 const sections: SettingsSection[] = [
+  {
+    title: "Colores",
+    description:
+      "Colores globales del sitio. Se aplican a botones, enlaces, títulos y fondo.",
+    fields: THEME_FIELDS.map((field) => ({
+      name: field.key,
+      label: field.label,
+      type: "color" as const,
+      hint: field.hint,
+    })),
+  },
   {
     title: "Identidad visual",
     description:
@@ -34,7 +47,7 @@ const sections: SettingsSection[] = [
   {
     title: "Apariencia en buscadores (SEO)",
     description:
-      "Es lo que ven los buscadores y las redes cuando comparten el link: título, descripción e imagen de vista previa.",
+      "Es lo que ven los buscadores y las redes cuando comparten el link: título y descripción.",
     fields: [
       {
         name: "title",
@@ -51,8 +64,7 @@ const sections: SettingsSection[] = [
   },
   {
     title: "Portada (Hero)",
-    description:
-      "Imagen y textos de la primera pantalla de la página de inicio.",
+    description: "Imagen y textos de la primera pantalla de la página de inicio.",
     fields: [
       {
         name: "heroImages",
@@ -83,21 +95,44 @@ const sections: SettingsSection[] = [
         placeholder: "/contacto",
         hint: "Hacia dónde lleva el botón: una página del sitio (/contacto) o un link externo (https://...).",
       },
+      {
+        name: "heroSecondary",
+        label: "Texto del botón secundario",
+        hint: "Botón claro que acompaña al botón principal de la portada.",
+      },
     ],
   },
+  ...CONTENT_GROUPS.map((group) => ({
+    title: group.title,
+    description: group.description,
+    fields: group.fields.map((field) => ({
+      name: field.key,
+      label: field.label,
+      type: field.type,
+      placeholder: field.placeholder,
+      hint: field.hint,
+    })),
+  })),
 ];
 
 export default async function AdminConfigPage() {
   const settings = await getSiteSettings();
+  const content = getContent(settings.content);
+  const theme = getTheme(settings.theme);
 
-  const initial: Record<string, string | string[]> = {};
-  for (const section of sections) {
-    for (const field of section.fields) {
-      const value = settings[field.name as keyof typeof settings];
-      initial[field.name] =
-        Array.isArray(value) ? value : typeof value === "string" ? value : "";
-    }
-  }
+  const initial: Record<string, string | string[]> = {
+    ...content,
+    ...theme,
+    logo: settings.logo ?? "",
+    favicon: settings.favicon ?? "",
+    title: settings.title,
+    description: settings.description,
+    heroSubtitle: settings.heroSubtitle,
+    heroText: settings.heroText,
+    heroButtonText: settings.heroButtonText,
+    heroButtonLink: settings.heroButtonLink,
+    heroImages: settings.heroImages,
+  };
 
   return (
     <div>
@@ -107,7 +142,8 @@ export default async function AdminConfigPage() {
       <SettingsForm initial={initial} sections={sections} />
       <p className="text-brand-dark text-xs mt-4">
         Los datos de contacto (WhatsApp, teléfono, email y redes sociales) se configuran en la
-        sección <strong>Datos de contacto</strong>.
+        sección <strong>Datos de contacto</strong>. En los textos podés usar llaves para pintar
+        una palabra con el color de acento, por ejemplo <code>{"Nuestros {Servicios}"}</code>.
       </p>
     </div>
   );

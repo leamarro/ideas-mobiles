@@ -1,37 +1,46 @@
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AccentText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 
 interface ProcesoProps {
+  content: Record<string, string>;
   showHeading?: boolean;
-  steps?: Array<{
-    number: string;
-    title: string;
-    description: string;
-  }>;
 }
 
-const defaultSteps = [
-  { number: "01", title: "Consulta", description: "Primera comunicación para entender tu necesidad." },
-  { number: "02", title: "Propuesta", description: "Presentamos un plan personalizado para tu proyecto." },
-  { number: "03", title: "Producción", description: "Desarrollo y fabricación del trabajo." },
-  { number: "04", title: "Entrega / Instalación", description: "Entregamos e instalamos tu nueva cartelería." },
-];
+export function Proceso({ content, showHeading = true }: ProcesoProps) {
+  const steps = [
+    {
+      number: "01",
+      title: content.processStep1Title,
+      description: content.processStep1Text,
+    },
+    {
+      number: "02",
+      title: content.processStep2Title,
+      description: content.processStep2Text,
+    },
+    {
+      number: "03",
+      title: content.processStep3Title,
+      description: content.processStep3Text,
+    },
+    {
+      number: "04",
+      title: content.processStep4Title,
+      description: content.processStep4Text,
+    },
+  ];
 
-export function Proceso({ steps = defaultSteps, showHeading = true }: ProcesoProps) {
   return (
     <section id="proceso" className="bg-zinc-50 py-20 md:py-28">
       <Container maxWidth="full">
         {showHeading && (
           <SectionHeading
-            eyebrow="Cómo trabajamos"
-          title={
-            <>
-              Nuestro <span className="text-brand-red-500">Proceso</span>
-            </>
-          }
-            subtitle="Así trabajamos — paso a paso, de idea a realidad"
+            eyebrow={content.procesoEyebrow}
+            title={<AccentText text={content.procesoTitle} />}
+            subtitle={content.procesoSubtitle}
           />
         )}
 
@@ -49,7 +58,7 @@ export function Proceso({ steps = defaultSteps, showHeading = true }: ProcesoPro
                   <span className="inline-flex items-center rounded-full bg-brand-red-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-red-600">
                     Paso {step.number}
                   </span>
-                  <h3 className="mt-4 font-display text-lg font-semibold uppercase text-zinc-950">
+                  <h3 className="mt-4 font-display text-lg font-semibold uppercase text-heading">
                     {step.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-500">

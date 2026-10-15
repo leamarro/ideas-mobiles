@@ -5,7 +5,7 @@ import { Service } from "@/types/service";
 import { uploadImageProps } from "@/lib/upload-urls";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Container } from "@/components/ui/Section";
 
 interface ServiciosProps {
@@ -36,7 +36,7 @@ export function Servicios({ services, content, showHeading = true }: ServiciosPr
               title={<AccentText text={content.serviciosTitle} />}
             />
           )}
-          <p className="mx-auto max-w-xl text-center text-zinc-500">{content.serviciosEmpty}</p>
+          <p className="mx-auto max-w-xl text-center text-zinc-500"><RichText text={content.serviciosEmpty} /></p>
         </Container>
       </section>
     );
@@ -82,7 +82,7 @@ export function Servicios({ services, content, showHeading = true }: ServiciosPr
                       {service.description}
                     </p>
                     <div className="mt-6 flex items-center justify-between">
-                      <span className="text-sm font-semibold text-zinc-900">{content.serviciosCta}</span>
+                      <span className="text-sm font-semibold text-zinc-900"><RichText text={content.serviciosCta} /></span>
                       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-700 transition-all duration-200 group-hover:border-brand-red-500 group-hover:bg-brand-red-500 group-hover:text-white">
                         <ArrowUpRight className="h-4 w-4" />
                       </span>

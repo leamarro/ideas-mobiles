@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import { uploadImageProps } from "@/lib/upload-urls";
 
@@ -30,11 +30,11 @@ export function Nosotros({
             )}
             <Reveal>
               <p className="mb-6 text-lg leading-relaxed text-zinc-600">
-                {content.nosotrosText}
+                <RichText text={content.nosotrosText} />
               </p>
               <blockquote className="relative rounded-2xl border-l-4 border-brand-red-500 bg-zinc-50 px-7 py-6">
                 <p className="whitespace-pre-line font-display text-xl font-medium leading-snug text-zinc-800 md:text-2xl">
-                  {content.nosotrosSlogan}
+                  <RichText text={content.nosotrosSlogan} />
                 </p>
               </blockquote>
             </Reveal>
@@ -68,7 +68,7 @@ export function Nosotros({
                 </div>
               </div>
               <span className="absolute bottom-5 left-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                {content.nosotrosBadge}
+                <RichText text={content.nosotrosBadge} />
               </span>
             </div>
           </Reveal>

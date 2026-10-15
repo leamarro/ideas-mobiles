@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Servicios } from "@/components/home/Servicios";
 import { getServices, getSiteSettings } from "@/lib/data";
 import { getContent } from "@/lib/content";
+import { RichText } from "@/components/ui/AccentText";
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +19,9 @@ export default async function ServiciosPage() {
     <main className="bg-white">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28">
         <h1 className="font-display font-bold text-3xl md:text-5xl mb-4 text-heading uppercase">
-          {content.pageServiciosTitle}
+          <RichText text={content.pageServiciosTitle} />
         </h1>
-        <p className="text-body text-lg max-w-2xl">{content.pageServiciosSubtitle}</p>
+        <p className="text-body text-lg max-w-2xl"><RichText text={content.pageServiciosSubtitle} /></p>
       </div>
       <Servicios services={services} content={content} showHeading={false} />
     </main>

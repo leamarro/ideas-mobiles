@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RichText } from "@/components/ui/AccentText";
 
 interface NavLink {
   label: string;
@@ -70,7 +71,7 @@ export function Header({ content }: { content: Record<string, string> }) {
           </Link>
 
           <span className="hidden max-w-[280px] text-center text-[11px] font-medium uppercase leading-relaxed tracking-wider text-[color:var(--color-tagline)] xl:block">
-            {content.headerTagline}
+            <RichText text={content.headerTagline} />
           </span>
 
           <nav className="hidden items-center gap-6 xl:gap-7 md:flex">
@@ -82,7 +83,7 @@ export function Header({ content }: { content: Record<string, string> }) {
                   href={link.href}
                   className="group relative inline-flex py-2 text-[13px] font-semibold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
                 >
-                  {link.label}
+                  <RichText text={link.label} />
                   <span
                     className={cn(
                       "absolute -bottom-0.5 left-0 h-0.5 bg-brand-red-500 transition-all duration-300 group-hover:w-full",
@@ -96,7 +97,7 @@ export function Header({ content }: { content: Record<string, string> }) {
               href="/contacto"
               className="rounded-full bg-brand-red-500 px-5 py-2.5 text-[13px] font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2"
             >
-              {content.headerCta}
+              <RichText text={content.headerCta} />
             </Link>
           </nav>
 
@@ -126,7 +127,7 @@ export function Header({ content }: { content: Record<string, string> }) {
                 className="flex animate-slide-up items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold uppercase tracking-wider text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
                 style={{ animationDelay: `${index * 40}ms` }}
               >
-                {link.label}
+                <RichText text={link.label} />
                 <ChevronRight className="h-4 w-4 text-zinc-500" />
               </Link>
             ))}
@@ -135,7 +136,7 @@ export function Header({ content }: { content: Record<string, string> }) {
               onClick={() => setMenuOpen(false)}
               className="mt-3 block rounded-xl bg-brand-red-500 px-4 py-3.5 text-center text-sm font-semibold text-white shadow-glow-red transition-colors hover:bg-brand-red-600"
             >
-              {content.headerCtaMobile}
+              <RichText text={content.headerCtaMobile} />
             </Link>
           </div>
         </nav>

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 
 interface ProcesoProps {
@@ -59,10 +59,10 @@ export function Proceso({ content, showHeading = true }: ProcesoProps) {
                     Paso {step.number}
                   </span>
                   <h3 className="mt-4 font-display text-lg font-semibold uppercase text-heading">
-                    {step.title}
+                    <RichText text={step.title} />
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                    {step.description}
+                    <RichText text={step.description} />
                   </p>
                 </div>
               </div>

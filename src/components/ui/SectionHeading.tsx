@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { RichText } from "@/components/ui/AccentText";
 
 interface SectionHeadingProps {
-  eyebrow: string;
+  eyebrow: ReactNode;
   title: ReactNode;
-  subtitle?: string;
+  subtitle?: ReactNode;
   align?: "center" | "left";
   dark?: boolean;
   className?: string;
@@ -37,7 +38,7 @@ export function SectionHeading({
         )}
       >
         <span className="h-1.5 w-1.5 rounded-full bg-brand-red-500" />
-        {eyebrow}
+        {typeof eyebrow === "string" ? <RichText text={eyebrow} /> : eyebrow}
       </span>
       <h2
         className={cn(
@@ -55,7 +56,7 @@ export function SectionHeading({
             dark ? "text-zinc-400" : "text-zinc-500"
           )}
         >
-          {subtitle}
+          {typeof subtitle === "string" ? <RichText text={subtitle} /> : subtitle}
         </p>
       )}
     </div>

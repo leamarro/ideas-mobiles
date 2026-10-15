@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Bold, Image as ImageIcon, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { ImageField } from "./image-field";
 import { ImageListField } from "./image-list-field";
 
@@ -14,6 +14,7 @@ export interface SettingsField {
   type?: "text" | "textarea" | "image" | "image-list" | "color" | "accent";
   placeholder?: string;
   hint?: string;
+  recommended?: string;
 }
 
 export interface SettingsSection {
@@ -34,6 +35,15 @@ const inputClass =
 const labelClass =
   "block text-sm font-display font-semibold text-brand-black mb-1 uppercase";
 const hintClass = "mt-1 text-xs leading-relaxed text-brand-grey-500";
+
+function RecommendedBadge({ size }: { size: string }) {
+  return (
+    <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-brand-grey-200 bg-brand-grey-50 px-3 py-1 text-xs font-medium text-brand-dark">
+      <ImageIcon className="h-3.5 w-3.5 text-brand-red-500" />
+      Tamaño recomendado: <strong className="font-semibold">{size}</strong>
+    </p>
+  );
+}
 
 interface AccentParts {
   before: string;
@@ -56,6 +66,92 @@ function joinAccent(parts: AccentParts): string {
 
 function asString(value: string | string[] | undefined): string {
   return typeof value === "string" ? value : "";
+}
+
+interface BoldTextFieldProps {
+  id: string;
+  multiline?: boolean;
+  value: string;
+  placeholder?: string;
+  onChange: (value: string) => void;
+}
+
+function BoldTextField({ id, multiline, value, placeholder, onChange }: BoldTextFieldProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  function applyBold() {
+    const el = multiline ? textareaRef.current : inputRef.current;
+    if (!el) return;
+
+    const start = el.selectionStart ?? value.length;
+    const end = el.selectionEnd ?? value.length;
+    const selected = value.slice(start, end);
+    const before = value.slice(0, start);
+    const after = value.slice(end);
+    const next = selected
+      ? `${before}**${selected}**${after}`
+      : `${before}****${after}`;
+
+    onChange(next);
+
+    const caret = start + 2;
+    const caretEnd = end + 2;
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(caret, caretEnd);
+    });
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={applyBold}
+          className="inline-flex items-center gap-1.5 rounded border-2 border-brand-grey-200 bg-white px-3 py-1.5 text-xs font-display font-semibold uppercase text-brand-dark transition-colors hover:border-brand-red-500 hover:text-brand-red-500"
+          title="Poner en negrita lo seleccionado"
+        >
+          <Bold className="h-3.5 w-3.5" />
+          Negrita
+        </button>
+        <span className="text-[11px] leading-relaxed text-brand-grey-500">
+          Seleccioná una palabra o frase y tocá Negrita.
+        </span>
+      </div>
+
+      {multiline ? (
+        <textarea
+          ref={textareaRef}
+          id={id}
+          rows={3}
+          className={inputClass}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ) : (
+        <input
+          ref={inputRef}
+          id={id}
+          type="text"
+          className={inputClass}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+
+      {value.trim().length > 0 && (
+        <p className="text-xs leading-relaxed text-brand-grey-600">
+          Vista previa:{" "}
+          <span className="font-display font-semibold text-brand-black">
+            <RichText text={value} />
+          </span>
+        </p>
+      )}
+    </div>
+  );
 }
 
 export function SettingsForm({ initial, fields, sections, title }: SettingsFormProps) {
@@ -182,6 +278,7 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
               value={Array.isArray(values[field.name]) ? (values[field.name] as string[]) : []}
               onChange={(value) => setValue(field.name, value)}
             />
+            {field.recommended && <RecommendedBadge size={field.recommended} />}
             {field.hint && <p className={hintClass}>{field.hint}</p>}
           </>
         ) : field.type === "image" ? (
@@ -192,6 +289,7 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
               onChange={(value) => setValue(field.name, value)}
               placeholder={field.placeholder}
             />
+            {field.recommended && <RecommendedBadge size={field.recommended} />}
             {field.hint && <p className={hintClass}>{field.hint}</p>}
           </>
         ) : field.type === "color" ? (
@@ -222,25 +320,13 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
             <label htmlFor={field.name} className={labelClass}>
               {field.label}
             </label>
-            {field.type === "textarea" ? (
-              <textarea
-                id={field.name}
-                rows={3}
-                className={inputClass}
-                placeholder={field.placeholder}
-                value={asString(values[field.name])}
-                onChange={(e) => setValue(field.name, e.target.value)}
-              />
-            ) : (
-              <input
-                id={field.name}
-                type="text"
-                className={inputClass}
-                placeholder={field.placeholder}
-                value={asString(values[field.name])}
-                onChange={(e) => setValue(field.name, e.target.value)}
-              />
-            )}
+            <BoldTextField
+              id={field.name}
+              multiline={field.type === "textarea"}
+              value={asString(values[field.name])}
+              placeholder={field.placeholder}
+              onChange={(value) => setValue(field.name, value)}
+            />
             {field.hint && <p className={hintClass}>{field.hint}</p>}
           </>
         )}

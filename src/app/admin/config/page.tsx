@@ -21,6 +21,7 @@ const sections: SettingsSection[] = [
         label: "Imágenes de portada",
         type: "image-list",
         placeholder: "/images/imagen-fondo2.png",
+        recommended: "1920×770 px (panorámica)",
         hint: "Imágenes de fondo de la primera pantalla. Si subís más de una, se muestran como carrusel automático (con flechas y puntitos). Si las quitás todas, la portada queda con fondo oscuro y solo los textos.",
       },
       {
@@ -84,13 +85,15 @@ const sections: SettingsSection[] = [
         label: "Logo",
         type: "image",
         placeholder: "/images/logo.png",
-        hint: "Logo completo. Se muestra en el pie de página y en la sección Nosotros. Recomendado en formato horizontal.",
+        recommended: "600×200 px (horizontal, PNG con fondo transparente)",
+        hint: "Logo completo. Se muestra en el encabezado y en el pie de página. Recomendado en formato horizontal.",
       },
       {
         name: "favicon",
         label: "Ícono del navegador (favicon)",
         type: "image",
         placeholder: "/images/logo.png",
+        recommended: "512×512 px (cuadrada)",
         hint: "Imagen cuadrada que aparece en la pestaña del navegador y al guardar el sitio como favorito.",
       },
     ],
@@ -116,7 +119,8 @@ const sections: SettingsSection[] = [
         label: "Imagen para compartir",
         type: "image",
         placeholder: "/images/og.png",
-        hint: "Imagen que se ve al compartir el sitio en WhatsApp, Facebook o Twitter. Recomendado 1200x630. Si está vacía se usa el logo.",
+        recommended: "1200×630 px",
+        hint: "Imagen que se ve al compartir el sitio en WhatsApp, Facebook o Twitter. Si está vacía se usa el logo.",
       },
     ],
   },
@@ -150,7 +154,9 @@ export default async function AdminConfigPage() {
       <p className="text-brand-dark text-xs mt-4">
         Los datos de contacto (WhatsApp, teléfono, email y redes sociales) se configuran en la
         sección <strong>Datos de contacto</strong>. En los títulos con dos o tres casillas, la{" "}
-        <strong>palabra en color</strong> se pinta automáticamente con el color de acento.
+        <strong>palabra en color</strong> se pinta automáticamente con el color de acento. Para
+        poner una palabra o frase en <strong>negrita</strong>, seleccionala en el campo y tocá el
+        botón <strong>Negrita</strong>.
       </p>
     </div>
   );

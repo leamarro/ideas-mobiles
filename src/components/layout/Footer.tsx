@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
 import { uploadImageProps } from "@/lib/upload-urls";
 import type { SiteSettings } from "@/types/site";
+import { RichText } from "@/components/ui/AccentText";
 
 const footerLinks = {
   navegacion: [
@@ -51,7 +52,7 @@ export function Footer({
               </div>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-zinc-500">
-              {description}
+              <RichText text={description} />
             </p>
             <div className="mt-6 flex gap-3">
               <a
@@ -105,7 +106,7 @@ export function Footer({
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              {content.footerNavHeading}
+              <RichText text={content.footerNavHeading} />
             </h4>
             <nav className="space-y-3">
               {footerLinks.navegacion.map((link) => (
@@ -122,7 +123,7 @@ export function Footer({
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              {content.footerServicesHeading}
+              <RichText text={content.footerServicesHeading} />
             </h4>
             <nav className="space-y-3">
               {footerLinks.servicios.map((service) => (
@@ -139,7 +140,7 @@ export function Footer({
 
           <div>
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              {content.footerContactHeading}
+              <RichText text={content.footerContactHeading} />
             </h4>
             <div className="space-y-3">
               <a
@@ -181,8 +182,8 @@ export function Footer({
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
-          <p className="text-xs text-zinc-400">{copyright}</p>
-          <p className="text-xs text-zinc-400">{content.footerTagline}</p>
+          <p className="text-xs text-zinc-400"><RichText text={copyright} /></p>
+          <p className="text-xs text-zinc-400"><RichText text={content.footerTagline} /></p>
         </div>
       </Container>
     </footer>

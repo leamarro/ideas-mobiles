@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { uploadImageProps } from "@/lib/upload-urls";
+import { RichText } from "@/components/ui/AccentText";
 
 const DEFAULT_HERO_IMAGE = "/images/imagen-fondo2.png";
 const AUTOPLAY_MS = 6000;
@@ -114,14 +115,14 @@ export function Hero({
               style={{ animationDelay: "0ms" }}
             >
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
-              {subtitle}
+              <RichText text={subtitle} />
             </span>
 
             <p
               className="animate-slide-up max-w-md text-sm leading-relaxed text-zinc-300 sm:max-w-lg sm:text-base md:text-lg"
               style={{ animationDelay: "80ms" }}
             >
-              {text}
+              <RichText text={text} />
             </p>
 
             <div
@@ -132,14 +133,14 @@ export function Hero({
                 href={buttonLink}
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
-                {buttonText}
+                <RichText text={buttonText} />
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
               <a
                 href="/trabajos"
                 className="inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
-                {secondaryButton}
+                <RichText text={secondaryButton} />
               </a>
             </div>
           </div>
@@ -151,7 +152,7 @@ export function Hero({
                 className="animate-slide-up inline-flex items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/50 hover:bg-zinc-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
                 style={{ animationDelay: "160ms" }}
               >
-                {secondaryButton}
+                <RichText text={secondaryButton} />
               </a>
             </div>
             <div className="flex min-w-0 max-w-[520px] flex-col items-center gap-3 text-center">
@@ -160,13 +161,13 @@ export function Hero({
                 style={{ animationDelay: "0ms" }}
               >
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-red-500" />
-                {subtitle}
+                <RichText text={subtitle} />
               </span>
               <p
                 className="animate-slide-up text-sm leading-relaxed text-zinc-300 sm:text-base md:text-lg"
                 style={{ animationDelay: "80ms" }}
               >
-                {text}
+                <RichText text={text} />
               </p>
             </div>
             <div className="flex flex-1 justify-end">
@@ -175,7 +176,7 @@ export function Hero({
                 className="animate-slide-up group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
                 style={{ animationDelay: "240ms" }}
               >
-                {buttonText}
+                <RichText text={buttonText} />
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
             </div>

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Section";
 import { CONTACT_PLACEHOLDERS } from "@/lib/constants";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 
 interface CTAProps {
@@ -28,12 +28,12 @@ export function CTA({ content, whatsapp = CONTACT_PLACEHOLDERS.whatsapp }: CTAPr
           <div className="relative mx-auto max-w-2xl text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-300 backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-red-500" />
-            {content.ctaBadge}
+            <RichText text={content.ctaBadge} />
           </span>
           <h2 className="font-display text-3xl font-bold uppercase leading-[1.05] tracking-tight text-white md:text-4xl lg:text-5xl">
             <AccentText text={content.ctaTitle} />
           </h2>
-          <p className="mt-4 text-base text-zinc-400 md:text-lg">{content.ctaSubtitle}</p>
+          <p className="mt-4 text-base text-zinc-400 md:text-lg"><RichText text={content.ctaSubtitle} /></p>
 
           <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
             <a
@@ -42,14 +42,14 @@ export function CTA({ content, whatsapp = CONTACT_PLACEHOLDERS.whatsapp }: CTAPr
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-brand-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-glow-red transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
             >
-              {buttonText}
+              <RichText text={buttonText} />
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
             <a
               href="/contacto"
               className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:border-white/40 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
             >
-              {content.ctaSecondary}
+              <RichText text={content.ctaSecondary} />
             </a>
           </div>
           </div>

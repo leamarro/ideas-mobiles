@@ -5,7 +5,7 @@ import { PortfolioItem } from "@/components/portfolio/PortfolioItem";
 import { Lightbox } from "@/components/portfolio/Lightbox";
 import { Container } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AccentText } from "@/components/ui/AccentText";
+import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import {
   PORTFOLIO_CATEGORIES,
@@ -74,7 +74,7 @@ export function Portfolio({
 
         {filteredItems.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-zinc-500">{content.portfolioEmpty}</p>
+            <p className="text-zinc-500"><RichText text={content.portfolioEmpty} /></p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">

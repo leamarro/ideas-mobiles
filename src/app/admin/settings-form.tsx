@@ -116,7 +116,8 @@ function BoldTextField({ id, multiline, value, placeholder, onChange }: BoldText
           Negrita
         </button>
         <span className="text-[11px] leading-relaxed text-brand-grey-500">
-          Seleccioná una palabra o frase y tocá Negrita.
+          Seleccioná una palabra o frase y tocá Negrita. Presioná Enter para
+          agregar un punto y aparte.
         </span>
       </div>
 
@@ -145,7 +146,7 @@ function BoldTextField({ id, multiline, value, placeholder, onChange }: BoldText
       {value.trim().length > 0 && (
         <p className="text-xs leading-relaxed text-brand-grey-600">
           Vista previa:{" "}
-          <span className="font-display font-semibold text-brand-black">
+          <span className="text-brand-black">
             <RichText text={value} />
           </span>
         </p>
@@ -252,7 +253,7 @@ export function SettingsForm({ initial, fields, sections, title }: SettingsFormP
         <p className={hintClass}>
           La <strong>palabra en color</strong> se pinta con el color de acento.
           Vista previa:{" "}
-          <span className="font-display font-semibold text-brand-black">
+          <span className="text-brand-black">
             <AccentText text={value} />
           </span>
         </p>

@@ -8,7 +8,7 @@ interface RichTextProps {
   boldClassName?: string;
 }
 
-const TOKEN_REGEX = /(\{[^}]*\}|\*\*[^*]+\*\*)/g;
+const TOKEN_REGEX = /(\{[^}]*\}|\*\*[^*]+\*\*|\n)/g;
 const ACCENT_REGEX = /^\{[\s\S]*\}$/;
 const BOLD_REGEX = /^\*\*[\s\S]+\*\*$/;
 
@@ -16,6 +16,8 @@ const BOLD_REGEX = /^\*\*[\s\S]+\*\*$/;
  * Renderiza texto enriquecido con dos convenciones simples:
  * - `{palabra}` se pinta con el color de acento.
  * - `**palabra**` se muestra en negrita.
+ * - Un salto de línea (`Enter`) se renderiza como salto de línea;
+ *   dos saltos seguidos generan un punto y aparte.
  *
  * Ej.: "Nuestros {Servicios}" -> "Servicios" en acento.
  *      "Esto es **importante**" -> "importante" en negrita.
@@ -25,11 +27,17 @@ export function RichText({
   accentClassName = "text-brand-red-500",
   boldClassName = "font-bold",
 }: RichTextProps) {
-  const parts = text.split(TOKEN_REGEX).filter((part) => part.length > 0);
+  const parts = text
+    .replace(/\r\n/g, "\n")
+    .split(TOKEN_REGEX)
+    .filter((part) => part.length > 0);
 
   return (
     <>
       {parts.map((part, index) => {
+        if (part === "\n") {
+          return <br key={index} />;
+        }
         if (ACCENT_REGEX.test(part)) {
           return (
             <span key={index} className={accentClassName}>

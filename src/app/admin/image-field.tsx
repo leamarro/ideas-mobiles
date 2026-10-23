@@ -74,7 +74,8 @@ export function ImageField({
     }
   }
 
-  const showPreview = value.startsWith("/");
+const showPreview = canPreviewImage(value);
+
 
   return (
     <div>

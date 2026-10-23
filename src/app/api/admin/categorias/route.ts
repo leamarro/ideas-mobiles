@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { getAllPortfolioCategories } from "@/lib/data";
-import { FALLBACK_PORTFOLIO_CATEGORIES } from "@/types/portfolio";
+import { ALL_CATEGORY_SLUG, ensureDefaultCategories, getAllPortfolioCategories } from "@/lib/data";
 import { slugify } from "@/lib/utils";
 
 export async function GET() {
@@ -32,7 +31,7 @@ export async function POST(request: Request) {
   }
 
   const slug = slugify(name);
-  if (!slug || slug === "todos") {
+  if (!slug || slug === ALL_CATEGORY_SLUG) {
     return NextResponse.json({ error: "Nombre de categoría inválido" }, { status: 400 });
   }
 
@@ -43,16 +42,7 @@ export async function POST(request: Request) {
   });
   if (existing) return NextResponse.json(existing);
 
-  // Con la tabla vacía el sitio muestra las categorías por defecto: se guardan
-  // primero para que no desaparezcan del filtro al crear la nueva.
-  if ((await prisma.category.count()) === 0) {
-    await prisma.category.createMany({
-      data: FALLBACK_PORTFOLIO_CATEGORIES.map((category, index) => ({
-        ...category,
-        order: index + 1,
-      })),
-    });
-  }
+  await ensureDefaultCategories();
 
   const last = await prisma.category.findFirst({
     orderBy: { order: "desc" },
@@ -66,4 +56,36 @@ export async function POST(request: Request) {
 
   revalidatePath("/", "layout");
   return NextResponse.json(category, { status: 201 });
+}
+
+export async function DELETE(request: Request) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
+  const body = await request.json().catch(() => null);
+  const slug = body && typeof body.slug === "string" ? body.slug : "";
+  if (!slug || slug === ALL_CATEGORY_SLUG) {
+    return NextResponse.json({ error: "Categoría inválida" }, { status: 400 });
+  }
+
+  // Se cuentan también los trabajos ocultos: al publicarlos quedarían sin categoría.
+  const itemsCount = await prisma.portfolioItem.count({ where: { category: slug } });
+  if (itemsCount > 0) {
+    return NextResponse.json(
+      {
+        error: `No se puede borrar: tiene ${itemsCount} ${itemsCount === 1 ? "trabajo" : "trabajos"}. Pasalos a otra categoría primero.`,
+      },
+      { status: 409 }
+    );
+  }
+
+  await ensureDefaultCategories();
+
+  const { count } = await prisma.category.deleteMany({ where: { slug } });
+  if (count === 0) {
+    return NextResponse.json({ error: "Categoría no encontrada" }, { status: 404 });
+  }
+
+  revalidatePath("/", "layout");
+  return NextResponse.json({ ok: true });
 }

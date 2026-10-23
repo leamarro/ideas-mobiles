@@ -33,7 +33,11 @@ export function Portfolio({
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const filters = [{ slug: "todos", name: "Todos" }, ...categories];
+  // Una categoría sin trabajos publicados no se muestra como filtro.
+  const usedCategories = categories.filter((cat) =>
+    items.some((item) => item.category === cat.slug)
+  );
+  const filters = [{ slug: "todos", name: "Todos" }, ...usedCategories];
 
   const filteredItems =
     selectedCategory === "todos"

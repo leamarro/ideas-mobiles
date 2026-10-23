@@ -39,13 +39,13 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
 ];
 
 export const PORTFOLIO_CATEGORY_LABELS: Record<PortfolioCategory, string> = {
-  todos: "Todos",
   carteleria: "Cartelería",
   "corpóreas": "Corpóreas",
   vinilos: "Vinilos",
   vehicular: "Vehicular",
   imprenta: "Imprenta",
   senalizacion: "Señalética",
+  todos: "Todos"
 };
 
 export interface PortfolioCategoryOption {

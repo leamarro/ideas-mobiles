@@ -12,9 +12,12 @@ export function formatPhoneNumber(phone: string): string {
 
 export function slugify(text: string): string {
   return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
-    .trim();
+    .replace(/^-|-$/g, "");
 }

@@ -399,7 +399,7 @@ export function AdminTrabajos({ initialItems, categories }: AdminTrabajosProps) 
             {initialItems.map((item) => (
               <tr key={item.id} className="hover:bg-brand-grey-50">
                 <td className="px-4 py-3">
-                  {item.image.startsWith("/") ? (
+                  {canPreviewImage(item.image) ? (
                     <div className="relative h-10 w-16 overflow-hidden rounded border border-brand-grey-200">
                       <Image
                         src={item.image}

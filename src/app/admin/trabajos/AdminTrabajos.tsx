@@ -7,8 +7,7 @@ import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import type { PortfolioCategoryOption, PortfolioItem } from "@/types/portfolio";
 import { useToast } from "@/hooks/useToast";
 import { ImageField } from "@/app/admin/image-field";
-import { uploadImageProps } from "@/lib/upload-urls";
-
+import { uploadImageProps, canPreviewImage } from "@/lib/upload-urls";
 interface FormState {
   id?: string;
   title: string;

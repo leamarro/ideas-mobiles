@@ -28,7 +28,7 @@ export function Portfolio({
   content,
   showHeading = true,
 }: PortfolioProps) {
-  const [selectedCategory, setSelectedCategory] = useState("todos");
+  const [selectedCategory, setSelectedCategory] = useState("carteleria");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);

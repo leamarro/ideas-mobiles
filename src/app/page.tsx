@@ -8,15 +8,16 @@ import { Contacto } from "@/components/home/Contacto";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { getPortfolioItems, getServices, getSiteSettings } from "@/lib/data";
+import { getPortfolioCategories, getPortfolioItems, getServices, getSiteSettings } from "@/lib/data";
 import { getContent } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [services, portfolioItems, settings] = await Promise.all([
+  const [services, portfolioItems, portfolioCategories, settings] = await Promise.all([
     getServices(),
     getPortfolioItems(),
+    getPortfolioCategories(),
     getSiteSettings(),
   ]);
 
@@ -35,7 +36,7 @@ export default async function Home() {
           images={settings.heroImages}
         />
         <Servicios services={services} content={content} />
-        <Portfolio items={portfolioItems} content={content} />
+        <Portfolio items={portfolioItems} categories={portfolioCategories} content={content} />
         <Nosotros content={content} logo={settings.logo || "/images/logo.png"} />
         <Proceso content={content} />
         <CTA content={content} whatsapp={settings.whatsapp} />

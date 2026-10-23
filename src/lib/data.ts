@@ -5,7 +5,11 @@ import {
   FALLBACK_SETTINGS,
 } from "@/lib/fallback-data";
 import type { Service } from "@/types/service";
-import type { PortfolioItem } from "@/types/portfolio";
+import {
+  FALLBACK_PORTFOLIO_CATEGORIES,
+  type PortfolioCategoryOption,
+  type PortfolioItem,
+} from "@/types/portfolio";
 import type { SiteSettings } from "@/types/site";
 
 export { FALLBACK_SETTINGS };
@@ -29,6 +33,22 @@ export async function getPortfolioItems(): Promise<PortfolioItem[]> {
     });
   } catch {
     return FALLBACK_PORTFOLIO;
+  }
+}
+
+// "todos" está en la tabla por el seed, pero es el filtro general, no una categoría real.
+const ALL_CATEGORY_SLUG = "todos";
+
+export async function getPortfolioCategories(): Promise<PortfolioCategoryOption[]> {
+  try {
+    const categories = await prisma.category.findMany({
+      where: { published: true, slug: { not: ALL_CATEGORY_SLUG } },
+      orderBy: { order: "asc" },
+      select: { slug: true, name: true },
+    });
+    return categories.length ? categories : FALLBACK_PORTFOLIO_CATEGORIES;
+  } catch {
+    return FALLBACK_PORTFOLIO_CATEGORIES;
   }
 }
 
@@ -56,4 +76,13 @@ export async function getAllServices(): Promise<Service[]> {
 
 export async function getAllPortfolioItems(): Promise<PortfolioItem[]> {
   return prisma.portfolioItem.findMany({ orderBy: { order: "asc" } });
+}
+
+export async function getAllPortfolioCategories(): Promise<PortfolioCategoryOption[]> {
+  const categories = await prisma.category.findMany({
+    where: { slug: { not: ALL_CATEGORY_SLUG } },
+    orderBy: { order: "asc" },
+    select: { slug: true, name: true },
+  });
+  return categories.length ? categories : FALLBACK_PORTFOLIO_CATEGORIES;
 }

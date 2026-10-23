@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
-import type { PortfolioItem } from "@/types/portfolio";
-import { PORTFOLIO_CATEGORIES, PORTFOLIO_CATEGORY_LABELS } from "@/types/portfolio";
+import type { PortfolioCategoryOption, PortfolioItem } from "@/types/portfolio";
 import { useToast } from "@/hooks/useToast";
 import { ImageField } from "@/app/admin/image-field";
 import { uploadImageProps } from "@/lib/upload-urls";
@@ -16,15 +15,19 @@ interface FormState {
   description: string;
   image: string;
   category: string;
+  newCategory: string;
   order: number;
   published: boolean;
 }
+
+const NEW_CATEGORY = "__nueva__";
 
 const emptyForm = (order: number): FormState => ({
   title: "",
   description: "",
   image: "",
   category: "",
+  newCategory: "",
   order,
   published: true,
 });
@@ -34,14 +37,31 @@ const inputClass =
 const labelClass =
   "block text-sm font-display font-semibold text-brand-black mb-1 uppercase";
 
-const categoryOptions = PORTFOLIO_CATEGORIES.filter((cat) => cat !== "todos");
+interface AdminTrabajosProps {
+  initialItems: PortfolioItem[];
+  categories: PortfolioCategoryOption[];
+}
 
-export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] }) {
+export function AdminTrabajos({ initialItems, categories }: AdminTrabajosProps) {
   const router = useRouter();
   const { toast, showToast } = useToast();
   const [form, setForm] = useState<FormState | null>(null);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const categoryName = (slug: string) =>
+    categories.find((cat) => cat.slug === slug)?.name ?? slug;
+
+  // Un trabajo viejo puede tener una categoría que ya no está en la tabla:
+  // se agrega igual para que el select no la pierda al editarlo.
+  const editingCategory = form?.category;
+  const hasEditingCategory =
+    !editingCategory ||
+    editingCategory === NEW_CATEGORY ||
+    categories.some((cat) => cat.slug === editingCategory);
+  const categoryOptions = hasEditingCategory
+    ? categories
+    : [...categories, { slug: editingCategory, name: editingCategory }];
 
   function openCreate() {
     setFormError(null);
@@ -58,6 +78,7 @@ export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] 
       description: item.description ?? "",
       image: item.image,
       category: item.category,
+      newCategory: "",
       order: item.order,
       published: item.published,
     });
@@ -70,11 +91,38 @@ export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] 
     setSaving(true);
     setFormError(null);
 
+    let category = form.category;
+
+    if (category === NEW_CATEGORY) {
+      try {
+        const response = await fetch("/api/admin/categorias", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: form.newCategory }),
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          setFormError(data.error || "No se pudo crear la categoría");
+          setSaving(false);
+          return;
+        }
+
+        category = data.slug;
+        // Si falla el guardado del trabajo, el reintento usa la categoría ya creada.
+        setForm({ ...form, category, newCategory: "" });
+      } catch {
+        setFormError("Error de conexión");
+        setSaving(false);
+        return;
+      }
+    }
+
     const payload = {
       title: form.title,
       description: form.description,
       image: form.image,
-      category: form.category,
+      category,
       order: form.order,
       published: form.published,
     };
@@ -207,11 +255,34 @@ export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] 
               >
                 <option value="">Seleccioná una categoría</option>
                 {categoryOptions.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {PORTFOLIO_CATEGORY_LABELS[cat]}
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name}
                   </option>
                 ))}
+                <option value={NEW_CATEGORY}>+ Nueva categoría…</option>
               </select>
+
+              {form.category === NEW_CATEGORY && (
+                <div className="mt-3">
+                  <label htmlFor="newCategory" className={labelClass}>
+                    Nombre de la nueva categoría
+                  </label>
+                  <input
+                    id="newCategory"
+                    className={inputClass}
+                    value={form.newCategory}
+                    onChange={(e) => setForm({ ...form, newCategory: e.target.value })}
+                    placeholder="Ej: Stands y exhibidores"
+                    minLength={2}
+                    maxLength={40}
+                    required
+                    autoFocus
+                  />
+                  <p className="mt-1 text-xs text-brand-dark">
+                    Se agrega como filtro en la sección de trabajos del sitio.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="md:col-span-2">
@@ -334,7 +405,7 @@ export function AdminTrabajos({ initialItems }: { initialItems: PortfolioItem[] 
                   )}
                 </td>
                 <td className="px-4 py-3 font-medium text-brand-black">{item.title}</td>
-                <td className="px-4 py-3 text-brand-dark">{item.category}</td>
+                <td className="px-4 py-3 text-brand-dark">{categoryName(item.category)}</td>
                 <td className="px-4 py-3 text-brand-dark">{item.order}</td>
                 <td className="px-4 py-3">
                   <button

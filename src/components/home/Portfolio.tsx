@@ -8,8 +8,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AccentText, RichText } from "@/components/ui/AccentText";
 import { Reveal } from "@/components/ui/Reveal";
 import {
-  PORTFOLIO_CATEGORIES,
-  PORTFOLIO_CATEGORY_LABELS,
+  FALLBACK_PORTFOLIO_CATEGORIES,
+  PortfolioCategoryOption,
   PortfolioItem as PortfolioItemData,
 } from "@/types/portfolio";
 import { FALLBACK_PORTFOLIO } from "@/lib/fallback-data";
@@ -17,12 +17,14 @@ import { cn } from "@/lib/utils";
 
 interface PortfolioProps {
   items?: PortfolioItemData[];
+  categories?: PortfolioCategoryOption[];
   content: Record<string, string>;
   showHeading?: boolean;
 }
 
 export function Portfolio({
   items = FALLBACK_PORTFOLIO,
+  categories = FALLBACK_PORTFOLIO_CATEGORIES,
   content,
   showHeading = true,
 }: PortfolioProps) {
@@ -30,6 +32,8 @@ export function Portfolio({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const filters = [{ slug: "todos", name: "Todos" }, ...categories];
 
   const filteredItems =
     selectedCategory === "todos"
@@ -56,18 +60,18 @@ export function Portfolio({
         )}
 
         <div className="mb-10 flex flex-wrap justify-center gap-2">
-          {PORTFOLIO_CATEGORIES.map((cat) => (
+          {filters.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              key={cat.slug}
+              onClick={() => setSelectedCategory(cat.slug)}
               className={cn(
                 "rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red-500 focus-visible:ring-offset-2",
-                selectedCategory === cat
+                selectedCategory === cat.slug
                   ? "bg-zinc-950 text-white shadow-soft"
                   : "border border-zinc-200 bg-white text-zinc-500 hover:border-zinc-300 hover:text-zinc-950"
               )}
             >
-              {PORTFOLIO_CATEGORY_LABELS[cat]}
+              {cat.name}
             </button>
           ))}
         </div>

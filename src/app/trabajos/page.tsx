@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Portfolio } from "@/components/home/Portfolio";
-import { getPortfolioItems, getSiteSettings } from "@/lib/data";
+import { getPortfolioCategories, getPortfolioItems, getSiteSettings } from "@/lib/data";
 import { getContent } from "@/lib/content";
 import { RichText } from "@/components/ui/AccentText";
 
@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function TrabajosPage() {
-  const [portfolioItems, settings] = await Promise.all([
+  const [portfolioItems, portfolioCategories, settings] = await Promise.all([
     getPortfolioItems(),
+    getPortfolioCategories(),
     getSiteSettings(),
   ]);
   const content = getContent(settings.content);
@@ -26,7 +27,12 @@ export default async function TrabajosPage() {
         </h1>
         <p className="text-body text-lg max-w-2xl"><RichText text={content.pageTrabajosSubtitle} /></p>
       </div>
-      <Portfolio items={portfolioItems} content={content} showHeading={false} />
+      <Portfolio
+        items={portfolioItems}
+        categories={portfolioCategories}
+        content={content}
+        showHeading={false}
+      />
     </main>
   );
 }

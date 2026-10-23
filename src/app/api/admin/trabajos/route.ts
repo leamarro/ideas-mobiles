@@ -24,12 +24,13 @@ export async function POST(request: Request) {
   const image = typeof body.image === "string" ? body.image.trim() : "";
   const category = typeof body.category === "string" ? body.category.trim() : "";
 
-  if (!title || !image || !category) {
-    return NextResponse.json(
-      { error: "Título, imagen y categoría son obligatorios" },
-      { status: 400 }
-    );
-  }
+    if (!image || !category) {
+      return NextResponse.json(
+        { error: "Imagen y categoría son obligatorias" },
+        { status: 400 }
+      );
+    }
+
 
   const item = await prisma.portfolioItem.create({
     data: {

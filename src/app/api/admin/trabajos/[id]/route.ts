@@ -25,11 +25,8 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const data: Record<string, string | number | boolean | null> = {};
 
-  if (typeof body.title === "string") {
-    const title = body.title.trim();
-    if (!title) return NextResponse.json({ error: "El título no puede estar vacío" }, { status: 400 });
-    data.title = title;
-  }
+if (typeof body.title === "string") data.title = body.title.trim();
+
   if (typeof body.image === "string") {
     const image = body.image.trim();
     if (!image) return NextResponse.json({ error: "La imagen no puede estar vacía" }, { status: 400 });

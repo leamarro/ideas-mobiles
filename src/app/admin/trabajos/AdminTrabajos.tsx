@@ -170,6 +170,24 @@ export function AdminTrabajos({ initialItems, categories }: AdminTrabajosProps) 
     }
   }
 
+  async function handleDeleteCategory(category: PortfolioCategoryOption) {
+    if (!confirm(`¿Eliminar la categoría "${category.name}"?`)) return;
+
+    const response = await fetch("/api/admin/categorias", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: category.slug }),
+    });
+    const data = await response.json().catch(() => ({}));
+
+    if (response.ok) {
+      showToast("Categoría eliminada", "success");
+      router.refresh();
+    } else {
+      showToast(data.error || "No se pudo eliminar la categoría", "error");
+    }
+  }
+
   async function handleDelete(item: PortfolioItem) {
     if (!confirm(`¿Eliminar "${item.title}"? Esta acción no se puede deshacer.`)) return;
 
@@ -444,6 +462,44 @@ export function AdminTrabajos({ initialItems, categories }: AdminTrabajosProps) 
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-8 bg-white border-2 border-brand-grey-200 rounded-lg p-6">
+        <h2 className="font-display font-semibold text-lg text-brand-black uppercase mb-1">
+          Categorías
+        </h2>
+        <p className="text-sm text-brand-dark mb-4">
+          En el sitio solo se muestran las que tienen trabajos publicados. Para borrar una
+          categoría no tiene que tener ningún trabajo.
+        </p>
+        <ul className="flex flex-wrap gap-2">
+          {categories.map((category) => {
+            const itemsCount = initialItems.filter((item) => item.category === category.slug).length;
+            return (
+              <li
+                key={category.slug}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-brand-grey-200 bg-brand-grey-50 py-1 pl-4 pr-1 text-sm"
+              >
+                <span className="font-medium text-brand-black">{category.name}</span>
+                <span className="text-xs text-brand-dark">({itemsCount})</span>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteCategory(category)}
+                  disabled={itemsCount > 0}
+                  title={
+                    itemsCount > 0
+                      ? "Tiene trabajos asociados: pasalos a otra categoría para poder borrarla"
+                      : `Eliminar ${category.name}`
+                  }
+                  className="rounded-full p-1.5 text-brand-dark transition-colors hover:bg-white hover:text-brand-red-500 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-brand-dark"
+                  aria-label={`Eliminar categoría ${category.name}`}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
-import { uploadImageProps } from "@/lib/upload-urls";
+import { uploadImageProps, canPreviewImage } from "@/lib/upload-urls";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_BYTES = 5 * 1024 * 1024;

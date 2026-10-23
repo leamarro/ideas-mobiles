@@ -18,3 +18,8 @@ export function uploadImageProps(src: string): { unoptimized?: boolean } {
   if (!src) return {};
   return isUploadUrl(src) || isExternalUrl(src) ? { unoptimized: true } : {};
 }
+
+  // URLs que se pueden previsualizar: locales (/...) o externas (Vercel Blob).
+  export function canPreviewImage(src: string): boolean {
+    return src.startsWith("/") || isExternalUrl(src);
+  }

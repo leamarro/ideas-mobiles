@@ -250,7 +250,7 @@ export function AdminTrabajos({ initialItems, categories }: AdminTrabajosProps) 
                 id="title"
                 className={inputClass}
                 value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
               />
             </div>
 

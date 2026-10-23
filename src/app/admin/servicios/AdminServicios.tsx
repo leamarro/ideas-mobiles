@@ -304,7 +304,7 @@ export function AdminServicios({ initialServices }: { initialServices: Service[]
             {initialServices.map((service) => (
               <tr key={service.id} className="hover:bg-brand-grey-50">
                 <td className="px-4 py-3">
-                  {service.image?.startsWith("/") ? (
+                  {service.image && canPreviewImage(service.image) ? (
                     <div className="relative h-10 w-16 overflow-hidden rounded border border-brand-grey-200">
                       <Image
                         src={service.image}

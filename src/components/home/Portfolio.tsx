@@ -20,6 +20,7 @@ interface PortfolioProps {
   categories?: PortfolioCategoryOption[];
   content: Record<string, string>;
   showHeading?: boolean;
+  initialCategory?: string;
 }
 
 export function Portfolio({
@@ -27,8 +28,9 @@ export function Portfolio({
   categories = FALLBACK_PORTFOLIO_CATEGORIES,
   content,
   showHeading = true,
+  initialCategory = "carteleria",
 }: PortfolioProps) {
-  const [selectedCategory, setSelectedCategory] = useState("carteleria");
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getAllServices } from "@/lib/data";
+import { getAllPortfolioCategories, getAllServices } from "@/lib/data";
 import { AdminServicios } from "./AdminServicios";
 
 export const dynamic = "force-dynamic";
@@ -10,11 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminServiciosPage() {
-  const services = await getAllServices();
+  const [services, categories] = await Promise.all([
+    getAllServices(),
+    getAllPortfolioCategories(),
+  ]);
 
   return (
     <div>
-      <AdminServicios initialServices={services} />
+      <AdminServicios initialServices={services} categories={categories} />
     </div>
   );
 }

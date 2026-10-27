@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import type { Service } from "@/types/service";
+import { serviceCategoryToPortfolio, type PortfolioCategoryOption } from "@/types/portfolio";
 import { useToast } from "@/hooks/useToast";
 import { ImageField } from "@/app/admin/image-field";
 import { uploadImageProps, canPreviewImage } from "@/lib/upload-urls";
@@ -33,7 +34,13 @@ const inputClass =
 const labelClass =
   "block text-sm font-display font-semibold text-brand-black mb-1 uppercase";
 
-export function AdminServicios({ initialServices }: { initialServices: Service[] }) {
+export function AdminServicios({
+  initialServices,
+  categories,
+}: {
+  initialServices: Service[];
+  categories: PortfolioCategoryOption[];
+}) {
   const router = useRouter();
   const { toast, showToast } = useToast();
   const [form, setForm] = useState<FormState | null>(null);
@@ -54,7 +61,7 @@ export function AdminServicios({ initialServices }: { initialServices: Service[]
       title: service.title,
       description: service.description,
       image: service.image ?? "",
-      category: service.category ?? "",
+      category: serviceCategoryToPortfolio(service.category) ?? "",
       order: service.order,
       published: service.published,
     });
@@ -211,13 +218,19 @@ export function AdminServicios({ initialServices }: { initialServices: Service[]
               <label htmlFor="category" className={labelClass}>
                 Categoría
               </label>
-              <input
+              <select
                 id="category"
                 className={inputClass}
-                placeholder="carteleria-comercial"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-              />
+              >
+                <option value="">Sin categoría (enlaza a todos los trabajos)</option>
+                {categories.map((cat) => (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Service } from "@/types/service";
+import { PORTFOLIO_CATEGORY_LABELS, trabajosCategoryHref } from "@/types/portfolio";
 import { uploadImageProps } from "@/lib/upload-urls";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -15,6 +16,7 @@ interface ServiciosProps {
 }
 
 const categoryLabels: Record<string, string> = {
+  ...PORTFOLIO_CATEGORY_LABELS,
   "carteles-letras": "Cartelería",
   "carteleria-comercial": "Cartelería comercial",
   "vinilos-esmerilados": "Vinilos y esmerilados",
@@ -56,7 +58,7 @@ export function Servicios({ services, content, showHeading = true }: ServiciosPr
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {publishedServices.map((service, index) => (
             <Reveal key={service.id} delay={index * 60} className="h-full">
-              <Link href="/servicios" className="block h-full">
+              <Link href={trabajosCategoryHref(service.category)} className="block h-full">
                 <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/70 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-card">
                   {service.image && (
                     <div className="relative aspect-[16/10] overflow-hidden">

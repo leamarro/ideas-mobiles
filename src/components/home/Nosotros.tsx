@@ -13,7 +13,7 @@ interface NosotrosProps {
 
 export function Nosotros({
   content,
-  logo = "/images/logo.png",
+  logo = "/images/Firefly.png",
   showHeading = true,
 }: NosotrosProps) {
   return (
@@ -40,38 +40,20 @@ export function Nosotros({
             </Reveal>
           </div>
 
-          <Reveal delay={120}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-zinc-950 shadow-pop">
-              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand-red-500/25 blur-3xl" />
-              <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-brand-red-600/15 blur-3xl" />
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-                  backgroundSize: "44px 44px",
-                }}
-                aria-hidden="true"
+        <Reveal delay={120}>
+          <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl bg-white p-8 md:p-12">
+            <div className="relative h-32 w-full max-w-[420px] md:h-40">
+              <Image
+                src={logo}
+                alt="Ideas Móviles"
+                fill
+                sizes="(max-width: 768px) 90vw, 420px"
+                className="object-contain"
+                {...uploadImageProps(logo)}
               />
-              <div className="absolute inset-0 flex items-center justify-center p-8">
-                <div className="animate-float-y rounded-2xl bg-white p-6 shadow-pop">
-                  <div className="relative h-12 w-44 md:w-48">
-                    <Image
-                      src={logo}
-                      alt="Ideas Móviles"
-                      fill
-                      sizes="(max-width: 768px) 176px, 192px"
-                      className="object-contain object-left"
-                      {...uploadImageProps(logo)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <span className="absolute bottom-5 left-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                <RichText text={content.nosotrosBadge} />
-              </span>
             </div>
-          </Reveal>
+          </div>
+        </Reveal>
         </div>
       </Container>
     </section>
